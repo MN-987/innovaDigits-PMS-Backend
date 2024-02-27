@@ -1,6 +1,6 @@
-import { ErrorClass } from "./errorClass.js"
+const ErrorClass = require("./errorClass.js");
 
-export const asyncHandler = (fn) => {
+const asyncHandler = (fn) => {
     return(req, res, next) => {
         return fn(req, res, next).catch(error => {
             return next(new ErrorClass(error.message, error.status))
@@ -8,8 +8,7 @@ export const asyncHandler = (fn) => {
     }
 }
 
-
-export const globalErrorHandling = (error, req, res, next) => {
+const globalErrorHandling = (error, req, res, next) => {
     if(error){
         if(process.env.MOOD == 'DEV'){
             return res.status(error.status || 400).json({
@@ -21,3 +20,8 @@ export const globalErrorHandling = (error, req, res, next) => {
             }
         }
 }
+
+module.exports = {
+    asyncHandler,
+    globalErrorHandling
+};
