@@ -1,3 +1,4 @@
+
 const  ErrorClass  = require("./errorClass.js");
 
 const asyncHandler = (fn) => {
@@ -9,8 +10,11 @@ const asyncHandler = (fn) => {
 }
 
 const globalErrorHandling = (error, req, res, next) => {
+
+
     if (error) {
         if (process.env.MOOD == 'DEV') {
+
             return res.status(error.status || 400).json({
                 msgError: error.message,
                 error,
@@ -19,6 +23,7 @@ const globalErrorHandling = (error, req, res, next) => {
         } else {
             return res.status(error.status || 400).json({ message: error.message });
         }
+
     }
 }
 
