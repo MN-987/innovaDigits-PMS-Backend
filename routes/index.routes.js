@@ -2,6 +2,7 @@ const connectDB = require("../config/dbConnection.js");
 const { globalErrorHandling } = require("../util/errorHandling.js");
 const cookieParser = require("cookie-parser");
 const express = require('express');
+const userRoutes = require("../routes/user.routes.js");
 
 const bootstrap = (app, express) => {
 
@@ -13,6 +14,8 @@ const bootstrap = (app, express) => {
 
     //Setup API Routing 
 
+
+    app.use("/api/v1/user", userRoutes);
     app.use("*",(req, res, next)=>{
         return res.json({message : "In-valid Routing"});
     });
