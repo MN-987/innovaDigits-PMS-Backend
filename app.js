@@ -1,7 +1,7 @@
 
-import express from 'express'
-import bootstrap from './routes/index.routes.js'
-import dotenv from 'dotenv'
+const express = require('express');
+const bootstrap = require('./routes/index.routes.js');
+const dotenv =require('dotenv') ;
 dotenv.config()
 
 

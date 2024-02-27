@@ -1,6 +1,7 @@
-import connectDB from "../config/dbConnection.js"
-import { globalErrorHandling } from "../util/errorHandling.js"
-import cookieParser from "cookie-parser"
+const connectDB =require("../config/dbConnection") 
+const { globalErrorHandling } =require("../util/errorHandling");
+const teamRouter =require("./team.routes.js");
+const cookieParser =require("cookie-parser");
 
 
 const bootstrap = (app,express) => {
@@ -12,7 +13,7 @@ const bootstrap = (app,express) => {
     app.use(express.static('public'));
 
     //Setup API Routing 
-
+    app.use("/api/teams",teamRouter);
 
     app.use("*",(req, res, next)=>{
         return res.json({message : "In-valid Routing"})
@@ -21,4 +22,4 @@ const bootstrap = (app,express) => {
     app.use(globalErrorHandling);
     connectDB();
 }
-export default bootstrap
+module.exports=bootstrap;
