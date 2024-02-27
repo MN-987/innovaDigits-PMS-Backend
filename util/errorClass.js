@@ -6,4 +6,4 @@
     }
 }
 
-module.exports.ErrorClass;
+module.exports=ErrorClass;

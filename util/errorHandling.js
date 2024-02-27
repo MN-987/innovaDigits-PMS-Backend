@@ -1,4 +1,4 @@
-const { ErrorClass } = require("./errorClass.js");
+const  ErrorClass  = require("./errorClass.js");
 
 const asyncHandler = (fn) => {
     return (req, res, next) => {
