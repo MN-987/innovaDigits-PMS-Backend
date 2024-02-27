@@ -1,16 +1,22 @@
+
 const  ErrorClass  = require("./errorClass.js");
 
 const asyncHandler = (fn) => {
     return (req, res, next) => {
+
         return fn(req, res, next).catch(error => {
             return next(new ErrorClass(error.message, error.status))
         })
     }
 }
 
+
+
+
 const globalErrorHandling = (error, req, res, next) => {
-    if (error) {
-        if (process.env.MOOD == 'DEV') {
+    if(error){
+        if(process.env.MOOD == 'DEV'){
+
             return res.status(error.status || 400).json({
                 msgError: error.message,
                 error,
@@ -19,7 +25,10 @@ const globalErrorHandling = (error, req, res, next) => {
         } else {
             return res.status(error.status || 400).json({ message: error.message });
         }
+
+
     }
 }
 
 module.exports = { asyncHandler, globalErrorHandling };
+
