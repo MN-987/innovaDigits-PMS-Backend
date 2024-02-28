@@ -1,6 +1,13 @@
 const mongoose = require("mongoose");
+
 const Schema = mongoose.Schema
 const uuid = require('uuid').v4;
+const Level = require('./level.model.js');
+const Team = require('./team.model.js');
+const {
+    asyncHandler
+} = require("../util/errorHandling");
+
 
 const userSchema = new Schema({
     firstName: {
@@ -42,6 +49,7 @@ const userSchema = new Schema({
     },
     level: {
         type: Schema.Types.Mixed,
+        ref: 'Level'
     },
     role: {
         type: Schema.Types.Mixed,
@@ -76,6 +84,28 @@ const userSchema = new Schema({
     },
 })
 
+
+asyncHandler(userSchema.pre('save', async function (next) {
+    const levelObj = await Level.findOne({
+        levelName: this.level
+    })
+    if (levelObj) {
+        this.level = levelObj._id
+    } else {
+        throw new Error("level not found")
+    }
+
+    const teamObj = await Team.findOne({
+        teamName: this.team
+    })
+
+    if (teamObj) {
+        this.team = teamObj._id;
+    } else {
+        throw new Error("Team not found")
+    }
+
+}))
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

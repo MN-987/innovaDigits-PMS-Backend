@@ -1,13 +1,20 @@
 const express = require('express');
-
-const { addNewLevel, getAllLevels, getLevelById, updateLevel ,deleteLevel } = require('../controller/level.controller');
-const { validateLevelSchema } = require('../middleware/validator/level.validators');
-
+const levelController = require('../controller/level.controller');
+const { asyncHandler } = require('../util/errorHandling');
 const levelRouter = express.Router();
+const levelValidator =require('../middleware/validator/level.validators');
+const { validation } = require('../middleware/validator/validation');
 
-levelRouter.route('/').get(getAllLevels).post(addNewLevel);
+
+
+levelRouter.route('/')
+.get(asyncHandler(levelController.getAllLevels))
+.post(validation(levelValidator.validateAddLevel),asyncHandler(levelController.addNewLevel));
 
 levelRouter.route('/:levelID')
-.get(getLevelById)
-.patch(updateLevel).delete(deleteLevel);
+.get(asyncHandler(levelController.getLevelById))
+.patch(validation(levelValidator.validatUpdateLevel),asyncHandler(levelController.updateLevel))
+.delete(asyncHandler(levelController.deleteLevel));
+
+
 module.exports = levelRouter;
