@@ -2,6 +2,7 @@
 module.exports.validation=(schema, considerHeaders = false) => {
     return (req, res, next) => {
         const inputData = {...req.body, ...req.query, ...req.params}
+        console.log(inputData)
         if(req.file || req.files){
             inputData.file = req.file || req.files
         }
