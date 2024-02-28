@@ -8,15 +8,19 @@ const {
     updateTeam,
     deleteTeam,
   } = require("../controller/team.controller.js");
+const { validation } = require("../middleware/validator/validation");
+const { asyncHandler } = require("../util/errorHandling.js");
+const { validateAddTeam, validateUpdateTeam } = require("../middleware/validator/team.validator.js");
+
 
 
   teamRouter.route("/")
-    .get(getAllTeams)
-    .post(addTeam);
+    .get(asyncHandler(getAllTeams))
+    .post(validation(validateAddTeam), asyncHandler(addTeam));
 
   teamRouter.route("/:id")
-    .get(getTeam)
-    .patch(updateTeam)
-    .delete(deleteTeam);
+    .get(asyncHandler(getTeam))
+    .patch(validation(validateUpdateTeam), asyncHandler(updateTeam))
+    .delete(asyncHandler(deleteTeam));
 
 module.exports=teamRouter;
