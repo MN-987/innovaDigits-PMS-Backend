@@ -5,6 +5,7 @@ const connectDB = require("../config/dbConnection.js");
 const { globalErrorHandling } = require("../util/errorHandling.js");
 const cookieParser = require("cookie-parser");
 const levelRouter = require("./level.routes.js");
+const competencyRouter = require('./competency.routes.js')
 
 
 const express = require('express');
@@ -22,10 +23,11 @@ const bootstrap = (app, express) => {
     app.use(express.static('public'));
 
     //Setup API Routing 
-    app.use("/api/teams",teamRouter);
+    app.use("/api/v1/teams",teamRouter);
 
     app.use('/api/v1/levels', levelRouter);
     app.use("/api/v1/user", userRoutes);
+    app.use("/api/v1/competency", competencyRouter)
     app.use("*",(req, res, next)=>{
         return res.json({message : "In-valid Routing"});
     });

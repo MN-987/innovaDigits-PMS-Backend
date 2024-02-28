@@ -7,7 +7,7 @@ module.exports.addUser = joi.object().required().keys({
     username: joi.string().alphanum().min(3).max(15).required(),
     email: joi.string().email().required(),
     position: joi.string().pattern(/^[A-Za-z ]+$/).trim().required(),
-    level: joi.string().pattern(/^[A-Za-z ]+$/).trim().required(),
+    level: joi.string().pattern(/^[A-Za-z]+$/).trim().required(),
     role: joi.string().pattern(/^[A-Za-z ]+$/).trim().required(),
     team: joi.string().pattern(/^[A-Za-z ]+$/).trim().required()
 });
