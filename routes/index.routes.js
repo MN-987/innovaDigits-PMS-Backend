@@ -24,7 +24,7 @@ const bootstrap = (app, express) => {
     //Setup API Routing 
     app.use("/api/teams",teamRouter);
 
-    app.use('/api/levels', levelRouter);
+    app.use('/api/v1/levels', levelRouter);
     app.use("/api/v1/user", userRoutes);
     app.use("*",(req, res, next)=>{
         return res.json({message : "In-valid Routing"});
