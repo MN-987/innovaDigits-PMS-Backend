@@ -22,7 +22,7 @@ const bootstrap = (app, express) => {
     app.use(express.static('public'));
 
     //Setup API Routing 
-    app.use("/api/teams",teamRouter);
+    app.use("/api/v1/teams",teamRouter);
 
     app.use('/api/levels', levelRouter);
     app.use("/api/v1/user", userRoutes);
