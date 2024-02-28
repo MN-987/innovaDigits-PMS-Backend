@@ -2,41 +2,36 @@
 const Level = require("../data/level.model.js");
 
 
-async function getAllLevelsServices(){
+module.exports.getAllLevelsServices=async()=>{
         const levels = await Level.find({})
         return levels;
 }
 
-async function getLevelByIdServices(levelID){
+module.exports.getLevelByIdServices=async(levelID)=>{
     const level = await Level.findById(levelID)
     return level
 }
 
-async function updateLevelServices(levelID,updatedData){
+module.exports.updateLevelServices=async(levelID,updatedData)=>{
     const updatedLevel = await Level.updateOne({_id:levelID} ,{$set:{...updatedData}})
     return updatedLevel;
 }
 
-async function addNewLevel (){
+module.exports.addNewLevel= async()=>{
     const newLevel = new Level()
 }
 
-async function addLevelServices(levelData){
+module.exports.addLevelServices=async(levelData)=>{
     
         const newLevel = new Level(levelData);
         await newLevel.save();
         return newLevel;
  
 }
-async function deleteLevelServices(levleID){
+
+module.exports.deleteLevelServices= async (levleID)=>{
     await Level.deleteOne({_id:levleID});
 
 }
 
-module.exports= {
-    getAllLevelsServices,
-    getLevelByIdServices,
-    updateLevelServices,
-    addLevelServices,
-    deleteLevelServices
-}
+

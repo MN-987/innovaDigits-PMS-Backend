@@ -1,14 +1,11 @@
 const Joi = require("joi")
 
+module.exports.validateAddLevel =Joi.object().required().keys({
+    levelName:Joi.string().required().pattern(/^[A-za-z]+$/).trim().min(3).max(30)
+})
 
 
-const validateLevelSchema =(level)=>{
-
-    const schema =Joi.object({
-        levelName:Joi.string().required().pattern(/^[A-za-z]+$/).trim().min(5).max(30),
-    }) 
-    return schema.validate(level)
-}
-
-
-module.exports={validateLevelSchema};
+module.exports.validatUpdateLevel=Joi.object().required().keys({
+    levelID:Joi.string().required(),
+    levelName:Joi.string().required().pattern(/^[A-za-z]+$/).trim().min(3).max(30)
+})
