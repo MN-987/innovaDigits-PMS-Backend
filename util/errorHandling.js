@@ -3,7 +3,6 @@ const  ErrorClass  = require("./errorClass.js");
 
 const asyncHandler = (fn) => {
     return (req, res, next) => {
-
         return fn(req, res, next).catch(error => {
             return next(new ErrorClass(error.message, error.status))
         })
