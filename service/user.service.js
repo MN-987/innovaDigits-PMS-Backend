@@ -21,3 +21,5 @@ module.exports.updateUser = async (id, user) => {
 module.exports.deleteUser = async (id) => {
     return User.findByIdAndDelete(id);
 }
+
+module.exports.getUsers
