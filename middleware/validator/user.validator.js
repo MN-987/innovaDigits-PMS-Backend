@@ -13,7 +13,7 @@ module.exports.addUser = joi.object().required().keys({
 });
 
 module.exports.updateUser =joi.object().required().keys( {
-    id: joi.string().required(),
+    userId: joi.string().required(),
     firstName: joi.string().min(2).max(15).pattern(/^[A-Za-z]+$/).trim().optional(),
     lastName: joi.string().min(2).max(15).pattern(/^[A-Za-z]+$/).trim().optional(),
     username: joi.string().alphanum().min(3).max(15).optional(),
@@ -26,5 +26,5 @@ module.exports.updateUser =joi.object().required().keys( {
 
 
 module.exports.deleteUser =joi.object().required().keys( {
-    id: joi.string().required()
+    userId: joi.string().required()
 }); 

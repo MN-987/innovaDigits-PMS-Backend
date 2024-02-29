@@ -5,13 +5,17 @@ const userValidator = require("../middleware/validator/user.validator");
 const userController = require("../controller/user.controller");
 const { validation } = require("../middleware/validator/validation");
 
-router.route("/").
-post(
+router.route("/")
+.post(
     validation(userValidator.addUser),
     asyncHandler(userController.addUser)
 ).get(
     asyncHandler(userController.getAllUsers)
-).put(
+)
+
+router.route("/:userId")
+.get( asyncHandler(userController.getUserById))
+.put(
     validation(userValidator.updateUser),
     asyncHandler(userController.updateUser)
 ).delete(  
