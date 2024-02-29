@@ -11,10 +11,11 @@ levelRouter.route('/')
 .get(asyncHandler(levelController.getAllLevels))
 .post(validation(levelValidator.validateAddLevel),asyncHandler(levelController.addNewLevel));
 
-levelRouter.route('/:levelID')
+levelRouter.route('/edit/:levelID')
 .get(asyncHandler(levelController.getLevelById))
-.patch(validation(levelValidator.validatUpdateLevel),asyncHandler(levelController.updateLevel))
-.delete(asyncHandler(levelController.deleteLevel));
+.post(validation(levelValidator.validatUpdateLevel),asyncHandler(levelController.updateLevel))
+
+levelRouter.route('/delete/:levelID').get(asyncHandler(levelController.deleteLevel));
 
 
 module.exports = levelRouter;
