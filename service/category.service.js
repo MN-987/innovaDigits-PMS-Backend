@@ -28,5 +28,11 @@ module.exports.updateCategoryService =async(categoryId,updatedData)=>{
 
 
 module.exports.deleteCategoryService =async(categoryId)=>{
-   await Category.deleteOne({_id:categoryId});
+  return await Category.deleteOne({_id:categoryId});
+}
+
+module.exports.getCategoryByName=async(categoryName)=>{
+
+    const category =await Category.findOne({categoryName})
+    return category;
 }
