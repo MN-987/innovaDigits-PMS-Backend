@@ -1,5 +1,6 @@
 
 const Level = require("../data/level.model.js");
+const { ErrorClass } = require("../util/errorClass.js");
 
 
 module.exports.getAllLevelsServices=async()=>{
@@ -9,6 +10,9 @@ module.exports.getAllLevelsServices=async()=>{
 
 module.exports.getLevelByIdServices=async(levelID)=>{
     const level = await Level.findById(levelID)
+    if (!level) {
+        return next(new ErrorClass('This level is not found', 404))
+    }
     return level
 }
 
@@ -29,8 +33,8 @@ module.exports.addLevelServices=async(levelData)=>{
  
 }
 
-module.exports.deleteLevelServices= async (levleID)=>{
-    await Level.deleteOne({_id:levleID});
+module.exports.deleteLevelServices= async (levelID)=>{
+    await Level.deleteOne({_id:levelID});
 
 }
 
