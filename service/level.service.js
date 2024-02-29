@@ -34,11 +34,15 @@ module.exports.addLevelServices = async (levelData) => {
 }
 
 module.exports.deleteLevelServices = async (levelID) => {
-    if (!levelID) {
-        return new ErrorClass('This level is not found', 404)
-    }
-    await Level.deleteOne({ _id: levelID });
+   
+   return await Level.deleteOne({ _id: levelID });
 
+}
+
+module.exports.getLevelByName=async(levelName)=>{
+
+    const level =await Level.findOne({levelName})
+    return level;
 }
 
 
