@@ -1,10 +1,9 @@
 
 const levelService =require('../service/level.service.js')
-const { ErrorClass } = require("../util/errorClass.js");
 
 module.exports.getAllLevels =async (req,res) => {
         await levelService.getAllLevelsServices().then((levels)=>{
-            res.json({ status: "success", data: { levels } })
+            res.status(200).json({ status: "success", data: { levels } })
         })
       
     }
@@ -13,10 +12,7 @@ module.exports.getAllLevels =async (req,res) => {
 module.exports.getLevelById = async (req,res, next) => {
         const levelID = req.params.levelID;
          await levelService.getLevelByIdServices(levelID).then((level)=>{
-            if (!level) {
-                return next(new ErrorClass('This level is not found', 404))
-            }
-            return res.json({ status: "success", data: { level } })
+            return res.status(200).json({ status: "success", data: { level } })
         }).catch((error)=>{
             next(error)
         })
