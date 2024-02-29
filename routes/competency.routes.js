@@ -14,11 +14,17 @@ router.route("/").
     )
     .get(
         asyncHandler(competencyController.getAllCompetencies)
+    );
+router.route("/:competencyId")
+    .get(
+        asyncHandler(competencyController.getCompetencyById)
     )
-    .put(
-        asyncHandler(competencyController.updateUser)
+router.route("/edit/:competencyId")
+    .post(
+        asyncHandler(competencyController.updateCompetency)
     )
-    .delete(
+router.route("/delete/:competencyId")   
+    .get(
         asyncHandler(competencyController.deleteCompetency)
     );
 
