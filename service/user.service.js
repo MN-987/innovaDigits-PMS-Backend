@@ -5,12 +5,10 @@ module.exports.getAllUsers = async () => {
 }
 
 module.exports.getUserById = async (id) => {
-    if (!id) throw new Error('Id is required');
     return User.findById(id);
 }
 
 module.exports.addUser = async (user) => {
-    if (!user) throw new Error('User is required');
     return User.create(user);
 }
 
@@ -22,4 +20,8 @@ module.exports.deleteUser = async (id) => {
     return User.findByIdAndDelete(id);
 }
 
+module.exports.getUserByEmail =async(userEmail)=>{
+  
+  return await User.findOne({email:userEmail})
+}
 module.exports.getUsers

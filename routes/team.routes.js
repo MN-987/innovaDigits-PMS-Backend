@@ -20,7 +20,9 @@ const { validateAddTeam, validateUpdateTeam } = require("../middleware/validator
 
   teamRouter.route("/:id")
     .get(asyncHandler(getTeam))
-    .patch(validation(validateUpdateTeam), asyncHandler(updateTeam))
-    .delete(asyncHandler(deleteTeam));
+  teamRouter.route("/edit/:id") 
+    .post(validation(validateUpdateTeam), asyncHandler(updateTeam))
+  teamRouter.route("/delete/:id")
+    .get(asyncHandler(deleteTeam));
 
 module.exports=teamRouter;
