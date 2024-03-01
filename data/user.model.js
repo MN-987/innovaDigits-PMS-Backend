@@ -4,6 +4,8 @@ const Schema = mongoose.Schema
 const uuid = require('uuid').v4;
 const Level = require('./level.model.js');
 const Team = require('./team.model.js');
+const crypto=require('crypto');
+
 const {
     asyncHandler
 } = require("../util/errorHandling");
@@ -48,17 +50,18 @@ const userSchema = new Schema({
         type: String,
     },
     level: {
-        type: Schema.Types.Mixed,
+        type: Schema.Types.ObjectId,
         ref: 'Level'
     },
     role: {
         type: Schema.Types.Mixed,
     },
     team: {
-        type: Schema.Types.Mixed,
+        type: Schema.Types.ObjectId,
+        ref:'Team'
     },
-    refreshToken: {
-        type: String
+    refreshToken: { 
+        type: [String]
     },
     createdAt: {
         type: Date,
@@ -68,13 +71,10 @@ const userSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    refreshToken: {
-        type: String
-    },
     passwordResetToken: {
         type: String
     },
-    emailConfirmationToken: {
+    passwordActivationToken: {
         type: String,
         default: uuid()
     },
@@ -86,24 +86,28 @@ const userSchema = new Schema({
 
 
 asyncHandler(userSchema.pre('save', async function (next) {
-    const levelObj = await Level.findOne({
-        levelName: this.level
-    })
-    if (levelObj) {
-        this.level = levelObj._id
-    } else {
-        throw new Error("level not found")
-    }
+    const passwordActivationToken= crypto.randomBytes(20).toString('hex');
+   
+   this.passwordActivationToken=passwordActivationToken
+   
+    // const levelObj = await Level.findOne({
+    //     levelName: this.level
+    // })
+    // if (levelObj) {
+    //     this.level = levelObj._id
+    // } else {
+    //     throw new Error("level not found")
+    // }
 
-    const teamObj = await Team.findOne({
-        teamName: this.team
-    })
+    // const teamObj = await Team.findOne({
+    //     teamName: this.team
+    // })
 
-    if (teamObj) {
-        this.team = teamObj._id;
-    } else {
-        throw new Error("Team not found")
-    }
+    // if (teamObj) {
+    //     this.team = teamObj._id;
+    // } else {
+    //     throw new Error("Team not found")
+    // }
 
 }))
 const User = mongoose.model('User', userSchema);
