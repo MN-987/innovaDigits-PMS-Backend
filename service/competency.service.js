@@ -1,4 +1,5 @@
 const Competency = require('../data/competency.model')
+const { ErrorClass } = require("../util/errorClass");
 
 module.exports.addCompetency = async (competency) => {
     if (!competency) throw new Error('Competency is required');
@@ -9,9 +10,8 @@ module.exports.getAllCompetencies = async () => {
     return Competency.find();
 }
 
-module.exports.getCompetencyById = async (id) => {
-    if (!id) throw new Error('Id is required');
-    return Competency.findById(id);
+module.exports.getCompetencyById = async (competencyId) => {
+    return Competency.findById(competencyId);
 }
 
 module.exports.updateCompetency = async (competencyId, competency) => {
