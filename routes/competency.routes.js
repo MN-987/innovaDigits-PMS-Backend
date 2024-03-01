@@ -21,6 +21,7 @@ router.route("/:competencyId")
     )
 router.route("/edit/:competencyId")
     .post(
+        validation(competencyValidator.updateCompetency),
         asyncHandler(competencyController.updateCompetency)
     )
 router.route("/delete/:competencyId")   
