@@ -1,3 +1,6 @@
+
+
+
 const levelService = require('../service/level.service.js');
 const ErrorClass = require('../util/errorClass.js');
 
@@ -11,6 +14,7 @@ module.exports.getLevelById = async (req, res, next) => {
     const level = await levelService.getLevelByIdServices(levelID);
     if (!level) {
         return next(new ErrorClass('This level is not found', 404));
+
     }
     res.status(200).json({ status: "success", data: { level } });
 }
@@ -22,7 +26,7 @@ module.exports.updateLevel = async (req, res, next) => {
     if (level.modifiedCount === 0) {
         return next(new ErrorClass('This level is not found.', 404));
     }
-
+    
     res.status(200).json({ status: "success", data: { level } });
 }
 
@@ -43,5 +47,6 @@ module.exports.deleteLevel = async (req, res, next) => {
     if (deletedLevel.deletedCount === 0) {
         return next(new ErrorClass('This level is not found', 404));
     }
+
     res.status(200).json({ status: "success", data: null });
 }

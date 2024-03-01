@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema
-
+const ObjectId = Schema.Types.ObjectId;
 
 // still need to add (category, visibility and team assignments) to the schema 
 const competencySchema = new Schema({
@@ -11,11 +11,22 @@ const competencySchema = new Schema({
     },
     defaultDescription: {
         type: String,
-        default: 'This Competency Without a Description'
+        default: 'This Competency Without a Description',
+        required: true
     },
     seniorityLevels: [{
-        level: String,
+        type: ObjectId,
         description: String,
+        ref:"Level"
+    }],
+    category:{
+        type:ObjectId,
+        ref:"Category",
+        required: true
+    },
+    teamsAssigned:[{
+        type:ObjectId,
+        ref:"Team"
     }],
     createdAt: {
         type: Date,
