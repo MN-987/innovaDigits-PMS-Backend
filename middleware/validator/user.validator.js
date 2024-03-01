@@ -7,9 +7,9 @@ module.exports.addUser = joi.object().required().keys({
     username: joi.string().alphanum().min(3).max(15).required(),
     email: joi.string().email().required(),
     position: joi.string().pattern(/^[A-Za-z ]+$/).trim().required(),
-    level: joi.string().pattern(/^[A-Za-z]+$/).trim().required(),
+    level: joi.string().alphanum().trim().required(),
     role: joi.string().pattern(/^[A-Za-z ]+$/).trim().required(),
-    team: joi.string().pattern(/^[A-Za-z ]+$/).trim().required()
+    team: joi.string().alphanum().trim().required()
 });
 
 module.exports.updateUser =joi.object().required().keys( {
@@ -28,3 +28,10 @@ module.exports.updateUser =joi.object().required().keys( {
 module.exports.deleteUser =joi.object().required().keys( {
     userId: joi.string().required()
 }); 
+
+
+module.exports.setPassword=joi.object().required().keys({
+    passwordSetToken:joi.string().required(),
+    password:joi.string().required(),
+    confirmPassword:joi.string().required().valid(joi.ref('password'))
+})

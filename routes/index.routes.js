@@ -6,7 +6,7 @@ const cookieParser = require("cookie-parser");
 const levelRouter = require("./level.routes.js");
 const competencyRouter = require('./competency.routes.js')
 const categoryRouter =require('./category.routes.js')
-
+const authRouter=require('./auth.routes.js');
 
 const express = require('express');
 const userRoutes = require("../routes/user.routes.js");
@@ -24,12 +24,13 @@ const bootstrap = (app, express) => {
 
     //Setup API Routing 
     app.use("/api/v1/teams",teamRouter);
-
     app.use('/api/v1/levels', levelRouter);
     app.use('/api/v1/category', categoryRouter);
 
     app.use("/api/v1/user", userRoutes);
     app.use("/api/v1/competency", competencyRouter)
+    app.use("/api/v1/auth",authRouter);
+
     app.use("*",(req, res, next)=>{
         return res.json({message : "In-valid Routing"});
     });
