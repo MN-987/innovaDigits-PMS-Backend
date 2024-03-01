@@ -22,8 +22,8 @@ module.exports.authenticateNewUser = async (username, password) => {
     changed to user.passwordHash in the bcrypt compare 
     */
 
-    const passwordHash = await bcrypt.hash(password, 11);
-    const result = await bcrypt.compare(password, passwordHash);
+
+    const result = await bcrypt.compare(password, user.passwordHash);
 
     if (!result) {
         return {

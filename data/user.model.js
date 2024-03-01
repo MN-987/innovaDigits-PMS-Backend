@@ -84,32 +84,20 @@ const userSchema = new Schema({
     },
 })
 
+/*
+I was trying to apply populate before finding but it did not work
+*/
 
-asyncHandler(userSchema.pre('save', async function (next) {
-    const passwordActivationToken= crypto.randomBytes(20).toString('hex');
-   
-   this.passwordActivationToken=passwordActivationToken
-   
-    // const levelObj = await Level.findOne({
-    //     levelName: this.level
-    // })
-    // if (levelObj) {
-    //     this.level = levelObj._id
-    // } else {
-    //     throw new Error("level not found")
-    // }
+// asyncHandler(userSchema.pre('save', async function (next) {
+//     const passwordActivationToken= crypto.randomBytes(20).toString('hex');
+//    this.passwordActivationToken=passwordActivationToken
+// }))
 
-    // const teamObj = await Team.findOne({
-    //     teamName: this.team
-    // })
-
-    // if (teamObj) {
-    //     this.team = teamObj._id;
-    // } else {
-    //     throw new Error("Team not found")
-    // }
-
-}))
+// asyncHandler(userSchema.pre('find', async function (next) {
+//     this.populate('team').execPopulate();
+//     this.populate('level').execPopulate();
+//     next();
+// }))
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
