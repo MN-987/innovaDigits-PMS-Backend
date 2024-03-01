@@ -6,6 +6,7 @@ const {
   creatTeamService,
   updateTeamService,
   deleteTeamService,
+  getTeamsNamesService
 } = require("../service/team.service.js");
 const validateTeamSchema = require("../middleware/validator/team.validator.js");
 
@@ -57,10 +58,21 @@ const deleteTeam = async (req, res, next) => {
   }
 };
 
+const getTeamsNames=async(req,res,next)=>{
+  const teamsNames= await  getTeamsNamesService();
+  return res.json({
+    status:"success",
+    data:{
+      teamsNames:teamsNames
+    }
+  })
+}
+
 module.exports = {
   getAllTeams,
   getTeam,
   addTeam,
   updateTeam,
   deleteTeam,
+  getTeamsNames
 };

@@ -13,6 +13,11 @@ router.route("/")
     asyncHandler(userController.getAllUsers)
 )
 
+router.route('/usernames').get(
+    asyncHandler(userController.getUsersNames)
+)
+
+
 router.route("/:userId").get( asyncHandler(userController.getUserById))
 
 

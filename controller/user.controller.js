@@ -55,5 +55,6 @@ module.exports.updateUser = async (req, res, next) => {
 }
 
 module.exports.getUsersNames = async (req, res) => {
-
+    const usersNames = await userService.getUsersNames()
+    res.status(200).json({ status: "success", data: { usersNames } }); 
 }

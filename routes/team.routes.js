@@ -7,6 +7,7 @@ const {
     getTeam,
     updateTeam,
     deleteTeam,
+    getTeamsNames
   } = require("../controller/team.controller.js");
 const { validation } = require("../middleware/validator/validation");
 const { asyncHandler } = require("../util/errorHandling.js");
@@ -18,6 +19,9 @@ const { validateAddTeam, validateUpdateTeam } = require("../middleware/validator
     .get(asyncHandler(getAllTeams))
     .post(validation(validateAddTeam), asyncHandler(addTeam));
 
+  teamRouter.get('/teams-names',
+  asyncHandler(getTeamsNames)
+  )
   teamRouter.route("/:id")
     .get(asyncHandler(getTeam))
   teamRouter.route("/edit/:id") 
