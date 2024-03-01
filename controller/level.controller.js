@@ -8,10 +8,10 @@ module.exports.getAllLevels =async (req,res) => {
       
     }
 
-
 module.exports.getLevelById = async (req,res, next) => {
         const levelID = req.params.levelID;
          await levelService.getLevelByIdServices(levelID).then((level)=>{
+          
             return res.status(200).json({ status: "success", data: { level } })
         }).catch((error)=>{
             next(error)
@@ -35,7 +35,6 @@ module.exports.addNewLevel = async(req,res,next)=>{
     
        await levelService.addLevelServices(req.body).then((level)=>{
         res.status(201).json({ status:"success", data: {levels: level } });
-
        })
 
     }

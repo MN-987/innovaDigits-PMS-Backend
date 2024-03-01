@@ -11,7 +11,9 @@ module.exports.addUser = async (req, res) => {
         level,
         role,
         team
-    } = req.body
+} = req.body
+
+
     await userService.addUser(req.body).then((user) => {
         res.status(201).json({ status:"success", data: { users: user }});
     });
