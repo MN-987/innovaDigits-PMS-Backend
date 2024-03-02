@@ -21,7 +21,13 @@ const bootstrap = (app, express) => {
 
     app.use(express.static('public'));
 
-
+    const corsOptions = {
+        origin: "*",
+        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+        credentials: true, // Enable credentials (cookies, HTTP authentication) cross-origin
+      };
+      app.use(cors(corsOptions));
+    
 
     // app.use(cors({
     //     "origin": "*",

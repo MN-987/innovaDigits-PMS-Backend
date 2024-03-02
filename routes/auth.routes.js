@@ -18,5 +18,4 @@ router.route('/set-password/:passwordSetToken').post(
 router.route('/refresh-token').get(authController.getRefreshToken);
 
 
-
 module.exports=router;
