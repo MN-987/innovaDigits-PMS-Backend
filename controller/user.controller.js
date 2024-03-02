@@ -1,12 +1,27 @@
 const userService = require('../service/user.service');
 const ErrorClass = require('../util/errorClass')
+const nodemailer = require('nodemailer')
+const sendgridTransport = require('nodemailer-sendgrid-transport')
+
 
 module.exports.addUser = async (req, res, next) => {
     const existedUser = await userService.getUserByEmail(req.body.email)
-    if(existedUser){
-        return next(new ErrorClass('this user already registered',400))
+    if (existedUser) {
+        return next(new ErrorClass('this user already registered', 400))
     }
     const user = await userService.addUser(req.body);
+    const transporter = nodemailer.createTransport(sendgridTransport({
+        auth: {
+            api_key: process.env.API_KEY
+        }
+    }))
+
+    transporter.sendMail({
+        to: req.body.email,
+        from: process.env.SENDER_EMAIL,
+        subject: 'Signup succeeded!',
+        html: '<h1>Everything under contorl 😎</h1>'
+    });
     return res.status(201).json({ status: "success", data: { user } });
 
 }
@@ -35,8 +50,8 @@ module.exports.deleteUser = async (req, res, next) => {
     } = req.params;
     const deletedUser = await userService.deleteUser(userId)
     console.log(deletedUser)
-    if (!deletedUser){
-       return next(new ErrorClass('This user is not found', 404))
+    if (!deletedUser) {
+        return next(new ErrorClass('This user is not found', 404))
     }
     res.status(200).json({ status: "success", data: null });
 
@@ -56,5 +71,5 @@ module.exports.updateUser = async (req, res, next) => {
 
 module.exports.getUsersNames = async (req, res) => {
     const usersNames = await userService.getUsersNames()
-    res.status(200).json({ status: "success", data: { usersNames } }); 
+    res.status(200).json({ status: "success", data: { usersNames } });
 }
