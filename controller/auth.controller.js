@@ -15,7 +15,7 @@ module.exports.postLogin = async (req, res) => {
         });
     } else if (response.status === "authenticated") {
         res.cookie("token", response.token, {
-            maxAge: 1000 * 60 * 60,
+            maxAge: 1000 * 60*60 ,
             httpOnly: true,
             sameSite: true,
             secure: true
@@ -52,5 +52,41 @@ module.exports.postSetPassword = async (req, res, next) => {
                 message: "Password set successfully"
             }
         });
+    }
+}
+
+module.exports.getRefreshToken=async (req,res,next)=>{
+    const refreshToken=req.cookies.refreshToken;
+    if(!refreshToken){
+        // Here I should rediregt to login page
+        return res.status(401).json({
+            status: "fail",
+            data: {
+                error: "Unauthorized"
+            }
+        });
+    }
+    else {
+        const response = await authService.getNewAccessToken(refreshToken);
+        if (response.status === "unauthorized") {
+              // Here I should rediregt to login page too
+            return res.status(401).json({
+                status: "fail",
+                data: {
+                    message: "Unauthorized user"
+                }
+            });
+        }       
+        
+        else if (response.status === "authorized") {
+            const token = response.token;
+            res.cookie("token", token, {
+                maxAge: 1000 * 60 * 60,
+                httpOnly: true,
+                sameSite: true,
+                secure: true
+            });
+            return res.redirect(req.headers.referer);
+        }
     }
 }
