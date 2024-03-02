@@ -9,6 +9,7 @@ const crypto=require('crypto');
 const {
     asyncHandler
 } = require("../util/errorHandling");
+const { string } = require("joi");
 
 
 const userSchema = new Schema({
@@ -61,7 +62,7 @@ const userSchema = new Schema({
         ref:'Team'
     },
     refreshToken: { 
-        type: [String]
+        type: String
     },
     createdAt: {
         type: Date,

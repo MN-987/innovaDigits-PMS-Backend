@@ -52,6 +52,7 @@ module.exports.deleteUser = async (req, res, next) => {
     console.log(deletedUser)
     if (!deletedUser) {
         return next(new ErrorClass('This user is not found', 404))
+
     }
     res.status(200).json({ status: "success", data: null });
 
