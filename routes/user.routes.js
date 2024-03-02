@@ -13,12 +13,20 @@ router.route("/")
     asyncHandler(userController.getAllUsers)
 )
 
-router.route("/:userId")
-.get( asyncHandler(userController.getUserById))
-.put(
+router.route('/usernames').get(
+    asyncHandler(userController.getUsersNames)
+)
+
+
+router.route("/:userId").get( asyncHandler(userController.getUserById))
+
+
+router.route('/edit/:userId').post(
     validation(userValidator.updateUser),
     asyncHandler(userController.updateUser)
-).delete(  
+)
+
+router.route('/delete/:userId').get(  
     validation(userValidator.deleteUser),
     asyncHandler(userController.deleteUser)
 );

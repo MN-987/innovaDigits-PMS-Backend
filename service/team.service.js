@@ -30,10 +30,14 @@ const deleteTeamService = async (id) => {
   await Teams.deleteOne({ _id: id });
 };
 
+const getTeamsNamesService = async()=>{
+  return await Teams.find().select('_id teamName')
+}
 module.exports={
   getTeamByIdService,
   getAllTeamsService,
   creatTeamService,
   updateTeamService,
-  deleteTeamService
+  deleteTeamService,
+  getTeamsNamesService
 }

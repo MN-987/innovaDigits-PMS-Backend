@@ -11,15 +11,18 @@ const competencySchema = new Schema({
     },
     defaultDescription: {
         type: String,
-        default: 'This Competency Without a Description'
+        default: 'This Competency Without a Description',
+        required: true
     },
     seniorityLevels: [{
-        level: String,
+        type: ObjectId,
         description: String,
+        ref:"Level"
     }],
     category:{
         type:ObjectId,
-        ref:"Category"
+        ref:"Category",
+        required: true
     },
     teamsAssigned:[{
         type:ObjectId,
