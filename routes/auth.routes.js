@@ -14,4 +14,9 @@ router.route('/login')
 router.route('/set-password/:passwordSetToken').post(
     validation(setPassword),  asyncHandler(authController.postSetPassword)
 )
+
+router.route('/refresh-token').get(authController.getRefreshToken);
+
+
+
 module.exports=router;

@@ -34,7 +34,6 @@ module.exports.deleteUser = async (req, res, next) => {
         userId
     } = req.params;
     const deletedUser = await userService.deleteUser(userId)
-    console.log(deletedUser)
     if (!deletedUser){
        return next(new ErrorClass('This user is not found', 404))
     }
