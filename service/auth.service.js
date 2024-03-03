@@ -26,7 +26,6 @@ module.exports.authenticateNewUser = async (username, password) => {
 
 
     const result = await bcrypt.compare(password, user.passwordHash);
-
     if (!result) {
         return {
             status: "unauthenticated",

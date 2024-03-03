@@ -33,7 +33,6 @@ const addTeam = async (req, res, next) => {
     let parentTeam=req.body.parentTeam;
     parentTeam  ?  parentTeam :  parentTeam=null ;
     req.body={...req.body,parentTeam:parentTeam};
-    console.log(" Parent team is ",typeof(req.body.parentTeam));
     const newTeam = await creatTeamService(req.body);
     res.status(201).json({ status: "success", data: { team: newTeam } });
   }

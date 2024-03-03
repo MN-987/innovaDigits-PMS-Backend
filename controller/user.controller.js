@@ -10,12 +10,13 @@ module.exports.addUser = async (req, res, next) => {
         return next(new ErrorClass('this user already registered', 400))
     }
     const user = await userService.addUser(req.body);
+    console.log(user.email);
     const transporter = nodemailer.createTransport(sendgridTransport({
         auth: {
             api_key: process.env.API_KEY
         }
     }))
-
+    const passwordSetUrl= `` ; // add the url to set the password that will be retrned from a function in the service  
     transporter.sendMail({
         to: req.body.email,
         from: process.env.SENDER_EMAIL,
