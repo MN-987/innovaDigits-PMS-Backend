@@ -12,8 +12,7 @@ router.route("/")
     validation(userValidator.addUser),
     asyncHandler(userController.addUser)
 ).get(
-    asyncHandler(isAuthenticated),
-    asyncHandler(isSuperAdmin),
+  
     asyncHandler(userController.getAllUsers)
 )
 
