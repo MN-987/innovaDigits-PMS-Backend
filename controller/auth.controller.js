@@ -2,11 +2,11 @@ const authService = require('../service/auth.service.js');
 const crypto = require('crypto');
 
 module.exports.postLogin = async (req, res) => {
+    
     const {
         username,
         password
     } = req.body;
-
     const response = await authService.authenticateNewUser(username, password);
     if (response.status === "unauthenticated") {
         return res.status(400).json({
@@ -46,7 +46,7 @@ module.exports.postSetPassword = async (req, res, next) => {
             }
         });
     } else {
-        return res.status(200).json({
+        return res.status(201).json({
             status: "success",
             data: {
                 message: "Password set successfully"
