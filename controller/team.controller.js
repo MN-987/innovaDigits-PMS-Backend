@@ -30,6 +30,9 @@ const addTeam = async (req, res, next) => {
   if (existedTeam) {
     next(new ErrorClass("This Team already Exists", 400));
   } else {
+    let parentTeam=req.body.parentTeam;
+    parentTeam  ?  parentTeam :  parentTeam=null ;
+    req.body={...req.body,parentTeam:parentTeam};
     const newTeam = await creatTeamService(req.body);
     res.status(201).json({ status: "success", data: { team: newTeam } });
   }

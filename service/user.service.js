@@ -41,3 +41,8 @@ module.exports.getUserByEmail =async(userEmail)=>{
 module.exports.getUsersNames=async()=>{
     return await User.find().select('_id username')
 }
+
+
+module.exports.getPasswordSetUrl=async()=>{
+    
+}

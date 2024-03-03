@@ -4,12 +4,15 @@ const { asyncHandler } = require("../util/errorHandling");
 const userValidator = require("../middleware/validator/user.validator");
 const userController = require("../controller/user.controller");
 const { validation } = require("../middleware/validator/validation");
+const isAuthenticated = require('../middleware/auth/isAuthenticated.js');
+const isSuperAdmin = require('../middleware/auth/isSuperAdmin.js');
 
 router.route("/")
 .post(
     validation(userValidator.addUser),
     asyncHandler(userController.addUser)
 ).get(
+  
     asyncHandler(userController.getAllUsers)
 )
 
