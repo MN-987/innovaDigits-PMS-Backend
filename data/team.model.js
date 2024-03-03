@@ -2,6 +2,11 @@ const mongoose =require("mongoose");
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
+const {
+  asyncHandler
+} = require("../util/errorHandling");
+
+
 const teamsSchema = new Schema({
   teamName: {
     type: String,
@@ -23,6 +28,18 @@ const teamsSchema = new Schema({
     ref: 'Team'
   },
 });
+
+
+/*
+I was trying to apply populate before finding but it did not work
+*/
+
+// asyncHandler(teamsSchema.pre('find', async function (next) {
+//   await this.populate('teamLeader');
+//   await this.populate('parentTeam');
+//   next();
+// }))
+
 
 // teamsSchema.pre('save',async function(next) {
 //   try {
