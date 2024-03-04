@@ -10,7 +10,7 @@ module.exports.addUser = async (req, res, next) => {
         return next(new ErrorClass('this user already registered', 400))
     }
     const user = await userService.addUser(req.body);
-    console.log(user.email);
+
     const transporter = nodemailer.createTransport(sendgridTransport({
         auth: {
             api_key: process.env.API_KEY
