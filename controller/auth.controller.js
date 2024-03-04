@@ -15,22 +15,24 @@ module.exports.postLogin = async (req, res) => {
             data: response.data
         });
     } else if (response.status === "authenticated") {
-        res.cookie("token", response.token, {
-            maxAge: 1000 * 60*60 ,
-            httpOnly: true,
-            sameSite: 'none',
-            secure: true
-        });
-        res.cookie("refreshToken", response.refreshToken, {
-            maxAge: 1000 * 60 * 60 * 24,
-            httpOnly: true,
-            sameSite: 'none',
-            secure: true
-        });
+        // res.cookie("token", response.token, {
+        //     maxAge: 1000 * 60*60 ,
+        //     httpOnly: true,
+        //     sameSite: 'none',
+        //     secure: true
+        // });
+        // res.cookie("refreshToken", response.refreshToken, {
+        //     maxAge: 1000 * 60 * 60 * 24,
+        //     httpOnly: true,
+        //     sameSite: 'none',
+        //     secure: true
+        // });
         return res.status(200).json({
             status: "success",
             data: {
-                message: "user authenticated successfully"
+                message: "user authenticated successfully",
+                token: response.token,
+                refreshToken: response.refreshToken
             },
         });
     }
