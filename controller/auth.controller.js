@@ -1,3 +1,4 @@
+const { NETWORK_AUTHENTICATION_REQUIRED } = require('http-status-codes');
 const authService = require('../service/auth.service.js');
 const crypto = require('crypto');
 
@@ -17,13 +18,13 @@ module.exports.postLogin = async (req, res) => {
         res.cookie("token", response.token, {
             maxAge: 1000 * 60*60 ,
             httpOnly: true,
-            sameSite: true,
+            sameSite: 'none',
             secure: true
         });
         res.cookie("refreshToken", response.refreshToken, {
             maxAge: 1000 * 60 * 60 * 24,
             httpOnly: true,
-            sameSite: true,
+            sameSite: 'none',
             secure: true
         });
         return res.status(200).json({
