@@ -31,7 +31,7 @@ module.exports.postLogin = async (req, res) => {
             status: "success",
             data: {
                 message: "user authenticated successfully",
-                token: response.token,
+                accesToken: response.token,
                 refreshToken: response.refreshToken
             },
         });
