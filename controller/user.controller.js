@@ -25,6 +25,7 @@ module.exports.addUser = async (req, res, next) => {
         subject: 'Password Set Link Innova-PMS!',
         html: ` <h2>Password Set Link -  Innova-PMS</h2>
         <p>You have been invited to set your password for  Innova-PMS. Please click the link below to set your password:</p>
+        <p>You can login in with this username ${user.username}</p>
         <a href="${passwordSetUrl}">Set Password</a>
         <p>If you did not request to set your password for  Innova-PMS, please ignore this email.</p>
         <p>Thank you,</p>
