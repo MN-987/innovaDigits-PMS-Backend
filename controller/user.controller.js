@@ -11,7 +11,9 @@ module.exports.addUser = async (req, res, next) => {
     }
     const user = await userService.addUser(req.body);
 
+
     const passwordSetUrl = `${process.env.FRONT_END_URL}/setpassword/${user.passwordActivationToken}`;
+
     const transporter = nodemailer.createTransport(sendgridTransport({
         auth: {
             api_key: process.env.API_KEY
