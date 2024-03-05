@@ -1,7 +1,7 @@
 const Teams =require("../data/team.model.js");
 
 const getTeamByIdService = async (teamId) => {
-  return await Teams.findById().populate('teamLeader', '_id  firstName lastName').populate('parentTeam', '_id teamName').select({ __v: 0 });
+  return await Teams.findById({_id:teamId}).populate('teamLeader', '_id  firstName lastName').populate('parentTeam', '_id teamName').select({ __v: 0 });
 };
 
 const getAllTeamsService = async () => {
