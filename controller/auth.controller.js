@@ -59,13 +59,16 @@ module.exports.postSetPassword = async (req, res, next) => {
 }
 
 module.exports.getRefreshToken=async (req,res,next)=>{
-    const refreshToken=req.cookies.refreshToken;
+
+    // This should be getten from the header
+    const refreshToken=req.body.refreshToken;
+
     if(!refreshToken){
         // Here I should rediregt to login page
         return res.status(401).json({
             status: "fail",
             data: {
-                error: "Unauthorized"
+                error: "Unauthorized refresh token not found"
             }
         });
     }
@@ -83,13 +86,20 @@ module.exports.getRefreshToken=async (req,res,next)=>{
         
         else if (response.status === "authorized") {
             const token = response.token;
-            res.cookie("token", token, {
-                maxAge: 1000 * 60 * 60,
-                httpOnly: true,
-                sameSite: true,
-                secure: true
+            // res.cookie("token", token, {
+            //     maxAge: 1000 * 60 * 60,
+            //     httpOnly: true,
+            //     sameSite: true,
+            //     secure: true
+            // });
+            // return res.redirect(req.headers.referer);
+            return res.status(200).json({
+                status: "success",
+                data: {
+                    message: "Token refreshed successfully",
+                    accessToken: token
+                }
             });
-            return res.redirect(req.headers.referer);
         }
     }
 }
