@@ -44,8 +44,8 @@ module.exports.authenticateNewUser = async (username, password) => {
             "username": user.username,
             "role": user.role
         }, process.env.REFRESH_TOKEN_SECRET, {
-            expiresIn: '1d'
-        })
+            expiresIn: '1m'
+                })
 
         // await User.findOneAndUpdate(
         //     { username: username },
@@ -104,10 +104,13 @@ module.exports.getNewAccessToken = async (refreshToken) => {
         }
     } else {
         const verified = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-        if (verified.exp < Date.now() / 1000) {
+       console.log(verified.exp);
+       console.log(Date.now()/1000);
+        
+        if (verified.exp * 1000 < Date.now()) {
             // Token has expired, redirect to the  login page
             return {
-                status: "unauthorized",
+                status: "expired",
                 data: {
                     message: "refresh token expired please login again"
                 }
