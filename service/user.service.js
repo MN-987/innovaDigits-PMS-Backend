@@ -1,11 +1,25 @@
 const User = require('../data/user.model');
 
 module.exports.getAllUsers = async () => {
-    return User.find();
+    return User.find().select('-passwordHash -refreshToken -passwordActivationToken').populate('level').populate({
+        path:'team',
+        populate:{
+            path:'teamLeader parentTeam',
+            select:'_id username firstName lastName teamName'
+        }
+    }
+    );
 }
 
 module.exports.getUserById = async (id) => {
-    return User.findById(id);
+    return User.findById(id).select('-passwordHash -refreshToken -passwordActivationToken').populate('level').populate({
+        path:'team',
+        populate:{
+            path:'teamLeader parentTeam',
+            select:'_id username firstName lastName teamName'
+        }
+    }
+    );
 }
 
 module.exports.addUser = async (user) => {
@@ -24,4 +38,18 @@ module.exports.getUserByEmail =async(userEmail)=>{
   
   return await User.findOne({email:userEmail})
 }
-module.exports.getUsers
+module.exports.getUsersNames=async()=>{
+    return await User.find().select('_id username')
+}
+
+
+module.exports.getPasswordSetUrl=async(username)=>{
+    const user = User.findOne({
+        username: username
+    })
+    if (!user) {
+        return null;
+    }
+    return `${process.env.FRONT_END_URL}/auth/set-password${user.passwordActivationToken}`
+    
+}
