@@ -46,19 +46,7 @@ const bootstrap = (app, express) => {
     app.use("/api/v1/competency", competencyRouter)
     app.use("/api/v1/auth",authRouter);
 
-    app.get("/search", async (req, res) => {
-        try {
-            const data = await Competency.find({
-                "$or": [
-                    { name: { $regex: req.query.comp, $options: 'i' } } 
-                ]
-            });
-            res.status(200).json({status:"success",data});
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: "Internal server error" });
-        }
-    });
+    // app.get("/api/v1/search",);
     
     app.use("*",(req, res, next)=>{
         return res.json({message : "In-valid Routing"});
