@@ -20,16 +20,16 @@ const competencySchema = new Schema({
             ref: "Level",
             required: true
         },
-        description:String
+        description: String
     }],
-    category:{
-        type:ObjectId,
-        ref:"Category",
+    category: {
+        type: ObjectId,
+        ref: "Category",
         required: true
     },
-    teamsAssigned:[{
-        type:ObjectId,
-        ref:"Team"
+    teamsAssigned: [{
+        type: ObjectId,
+        ref: "Team"
     }],
     createdAt: {
         type: Date,

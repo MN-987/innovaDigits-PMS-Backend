@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 const uuid = require('uuid').v4;
 const Level = require('./level.model.js');
 const Team = require('./team.model.js');
-const crypto=require('crypto');
+const crypto = require('crypto');
 
 const {
     asyncHandler
@@ -59,9 +59,9 @@ const userSchema = new Schema({
     },
     team: {
         type: Schema.Types.ObjectId,
-        ref:'Team'
+        ref: 'Team'
     },
-    refreshToken: { 
+    refreshToken: {
         type: String
     },
     createdAt: {
