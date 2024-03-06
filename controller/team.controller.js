@@ -6,6 +6,7 @@ const {
   creatTeamService,
   updateTeamService,
   deleteTeamService,
+  getTeamsNamesService
 } = require("../service/team.service.js");
 const validateTeamSchema = require("../middleware/validator/team.validator.js");
 
@@ -29,6 +30,9 @@ const addTeam = async (req, res, next) => {
   if (existedTeam) {
     next(new ErrorClass("This Team already Exists", 400));
   } else {
+    let parentTeam=req.body.parentTeam;
+    parentTeam  ?  parentTeam :  parentTeam=null ;
+    req.body={...req.body,parentTeam:parentTeam};
     const newTeam = await creatTeamService(req.body);
     res.status(201).json({ status: "success", data: { team: newTeam } });
   }
@@ -57,10 +61,21 @@ const deleteTeam = async (req, res, next) => {
   }
 };
 
+const getTeamsNames=async(req,res,next)=>{
+  const teamsNames= await  getTeamsNamesService();
+  return res.json({
+    status:"success",
+    data:{
+      teamsNames:teamsNames
+    }
+  })
+}
+
 module.exports = {
   getAllTeams,
   getTeam,
   addTeam,
   updateTeam,
   deleteTeam,
+  getTeamsNames
 };

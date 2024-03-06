@@ -1,16 +1,28 @@
 const User = require('../data/user.model');
 
 module.exports.getAllUsers = async () => {
-    return User.find();
+    return User.find().select('-passwordHash -refreshToken -passwordActivationToken').populate('level').populate({
+        path:'team',
+        populate:{
+            path:'teamLeader parentTeam',
+            select:'_id username firstName lastName teamName'
+        }
+    }
+    );
 }
 
 module.exports.getUserById = async (id) => {
-    if (!id) throw new Error('Id is required');
-    return User.findById(id);
+    return User.findById(id).select('-passwordHash -refreshToken -passwordActivationToken').populate('level').populate({
+        path:'team',
+        populate:{
+            path:'teamLeader parentTeam',
+            select:'_id username firstName lastName teamName'
+        }
+    }
+    );
 }
 
 module.exports.addUser = async (user) => {
-    if (!user) throw new Error('User is required');
     return User.create(user);
 }
 
@@ -22,4 +34,15 @@ module.exports.deleteUser = async (id) => {
     return User.findByIdAndDelete(id);
 }
 
-module.exports.getUsers
+module.exports.getUserByEmail =async(userEmail)=>{
+  
+  return await User.findOne({email:userEmail})
+}
+module.exports.getUsersNames=async()=>{
+    return await User.find().select('_id username')
+}
+
+
+module.exports.getPasswordSetUrl=async()=>{
+    
+}

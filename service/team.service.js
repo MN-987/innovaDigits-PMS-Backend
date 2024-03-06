@@ -1,11 +1,11 @@
 const Teams =require("../data/team.model.js");
 
 const getTeamByIdService = async (teamId) => {
-  return await Teams.findById({ _id: teamId }, { __v: 0 });
+  return await Teams.findById({_id:teamId}).populate('teamLeader', '_id  firstName lastName').populate('parentTeam', '_id teamName').select({ __v: 0 });
 };
 
 const getAllTeamsService = async () => {
-  return await Teams.find({}, { __v: 0 });
+  return await Teams.find().populate('teamLeader', '_id  firstName lastName').populate('parentTeam', '_id teamName').select({ __v: 0 }) ;
 };
 
 const creatTeamService = async (data) => {
@@ -30,10 +30,14 @@ const deleteTeamService = async (id) => {
   await Teams.deleteOne({ _id: id });
 };
 
+const getTeamsNamesService = async()=>{
+  return await Teams.find().select('_id teamName')
+}
 module.exports={
   getTeamByIdService,
   getAllTeamsService,
   creatTeamService,
   updateTeamService,
-  deleteTeamService
+  deleteTeamService,
+  getTeamsNamesService
 }

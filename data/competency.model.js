@@ -15,9 +15,12 @@ const competencySchema = new Schema({
         required: true
     },
     seniorityLevels: [{
-        type: ObjectId,
-        description: String,
-        ref:"Level"
+        levelId: {
+            type: ObjectId,
+            ref: "Level",
+            required: true
+        },
+        description:String
     }],
     category:{
         type:ObjectId,
