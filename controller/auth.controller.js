@@ -83,7 +83,6 @@ module.exports.getRefreshToken = async (req, res, next) => {
                 }
             });
         }
-
         else if (response.status === "authorized") {
             const token = response.token;
             // res.cookie("token", token, {
