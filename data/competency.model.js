@@ -15,7 +15,7 @@ const competencySchema = new Schema({
         required: true
     },
     seniorityLevels: [{
-        levelId: {
+        level: {
             type: ObjectId,
             ref: "Level",
             required: true
