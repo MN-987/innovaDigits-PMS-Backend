@@ -15,6 +15,9 @@ router.route("/").
     .get(
         asyncHandler(competencyController.getAllCompetencies)
     );
+router.route("/search").get(competencyController.search)
+router.route("/filter").get(competencyController.filter)
+
 router.route("/:competencyId")
     .get(
         asyncHandler(competencyController.getCompetencyById)
@@ -24,10 +27,11 @@ router.route("/edit/:competencyId")
         validation(competencyValidator.updateCompetency),
         asyncHandler(competencyController.updateCompetency)
     )
-router.route("/delete/:competencyId")   
+router.route("/delete/:competencyId")
     .get(
         asyncHandler(competencyController.deleteCompetency)
     );
+
 
 
 module.exports = router;

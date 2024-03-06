@@ -1,4 +1,4 @@
-const mongoose =require("mongoose");
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
@@ -22,12 +22,12 @@ const teamsSchema = new Schema({
   },
   parentTeam: {
     type: ObjectId,
-    default:function(){
+    default: function () {
       return this._id;
     },
     ref: 'Team'
   },
-  
+
 
 });
 
@@ -60,4 +60,4 @@ I was trying to apply populate before finding but it did not work
 // });
 
 const Teams = mongoose.model("Team", teamsSchema);
-module.exports=Teams;
+module.exports = Teams;
