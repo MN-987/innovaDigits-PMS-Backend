@@ -5,7 +5,12 @@ module.exports.addCompetency = async (competency) => {
 }
 
 module.exports.getAllCompetencies = async () => {
-    return Competency.find();
+    return Competency.find().populate('category',' _id categoryName ')
+    // .populate({
+    //     path: 'seniorityLevels.levelId', 
+    //     model: 'Level',
+    //     select: '_id levelName', 
+    //   }).select({ __v: 0 });
 }
 
 module.exports.getCompetencyById = async (competencyId) => {

@@ -15,7 +15,7 @@ router.route('/set-password/:passwordSetToken').post(
     validation(setPassword),  asyncHandler(authController.postSetPassword)
 )
 
-router.route('/refresh-token').get(authController.getRefreshToken);
+router.route('/refresh-token').get(asyncHandler(authController.getRefreshToken));
 
 
 module.exports=router;

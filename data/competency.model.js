@@ -4,7 +4,7 @@ const ObjectId = Schema.Types.ObjectId;
 
 // still need to add (category, visibility and team assignments) to the schema 
 const competencySchema = new Schema({
-    c: {
+    name: {
         type: String,
         unique: true,
         required: true,

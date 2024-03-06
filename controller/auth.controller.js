@@ -83,6 +83,15 @@ module.exports.getRefreshToken=async (req,res,next)=>{
                 }
             });
         }       
+       else if (response.status === "expired") {
+              // Here I should rediregt to login page too
+            return res.status(401).json({
+                status: "expired",
+                data: {
+                    message: "Unauthorized user"
+                }
+            });
+        }       
         
         else if (response.status === "authorized") {
             const token = response.token;
