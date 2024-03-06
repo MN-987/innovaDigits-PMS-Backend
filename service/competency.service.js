@@ -12,8 +12,8 @@ module.exports.getCompetencyById = async (competencyId) => {
     return Competency.findById(competencyId);
 }
 
-module.exports.getCompetencyByName = async (competenyName) => {
-    return Competency.find({ competenyName });
+module.exports.getCompetencyByName = async (name) => {
+    return Competency.findOne({ name });
 }
 
 module.exports.updateCompetency = async (competencyId, competency) => {

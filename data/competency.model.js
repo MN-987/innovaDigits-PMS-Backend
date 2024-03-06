@@ -4,7 +4,7 @@ const ObjectId = Schema.Types.ObjectId;
 
 // still need to add (category, visibility and team assignments) to the schema 
 const competencySchema = new Schema({
-    name: {
+    c: {
         type: String,
         unique: true,
         required: true,
@@ -15,9 +15,12 @@ const competencySchema = new Schema({
         required: true
     },
     seniorityLevels: [{
-        type: ObjectId,
-        description: String,
-        ref:"Level"
+        levelId: {
+            type: ObjectId,
+            ref: "Level",
+            required: true
+        },
+        description:String
     }],
     category:{
         type:ObjectId,
