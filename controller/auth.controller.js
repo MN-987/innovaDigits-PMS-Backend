@@ -3,7 +3,7 @@ const authService = require('../service/auth.service.js');
 const crypto = require('crypto');
 
 module.exports.postLogin = async (req, res) => {
-    
+
     const {
         username,
         password
@@ -58,12 +58,12 @@ module.exports.postSetPassword = async (req, res, next) => {
     }
 }
 
-module.exports.getRefreshToken=async (req,res,next)=>{
+module.exports.getRefreshToken = async (req, res, next) => {
 
     // This should be getten from the header
-    const refreshToken=req.body.refreshToken;
+    const refreshToken = req.body.refreshToken;
 
-    if(!refreshToken){
+    if (!refreshToken) {
         // Here I should rediregt to login page
         return res.status(401).json({
             status: "fail",
@@ -75,24 +75,14 @@ module.exports.getRefreshToken=async (req,res,next)=>{
     else {
         const response = await authService.getNewAccessToken(refreshToken);
         if (response.status === "unauthorized") {
-              // Here I should rediregt to login page too
+            // Here I should rediregt to login page too
             return res.status(401).json({
                 status: "fail",
                 data: {
                     message: "Unauthorized user"
                 }
             });
-        }       
-       else if (response.status === "expired") {
-              // Here I should rediregt to login page too
-            return res.status(401).json({
-                status: "expired",
-                data: {
-                    message: "Unauthorized user"
-                }
-            });
-        }       
-        
+        }
         else if (response.status === "authorized") {
             const token = response.token;
             // res.cookie("token", token, {
