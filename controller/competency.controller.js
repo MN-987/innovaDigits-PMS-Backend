@@ -51,3 +51,17 @@ module.exports.updateCompetency = async (req, res, next) => {
     res.status(200).json({status:"success",data:{updatedCompetency}});
 }
 
+module.exports.search = async (req, res) => {
+    try {
+        const data = await Competency.find({
+            "$or": [
+                { name: { $regex: req.query.comp, $options: 'i' } } 
+            ]
+        });
+        res.status(200).json({status:"success",data});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
