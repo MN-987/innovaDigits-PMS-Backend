@@ -74,7 +74,7 @@ module.exports.filter = async (req, res) => {
         }
 
         // if (req.query.category) {
-        //     filterQuery.category = { $lte: parseInt(req.query.category) };
+        //     filterQuery.category = req.query.category;
         // }
 
         // Execute the filter query
