@@ -43,13 +43,6 @@ module.exports.getUsersNames=async()=>{
 }
 
 
-module.exports.getPasswordSetUrl=async(username)=>{
-    const user = User.findOne({
-        username: username
-    })
-    if (!user) {
-        return null;
-    }
-    return `${process.env.FRONT_END_URL}/auth/set-password${user.passwordActivationToken}`
+module.exports.getPasswordSetUrl=async()=>{
     
 }
