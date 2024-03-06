@@ -62,7 +62,6 @@ module.exports.authenticateNewUser = async (username, password) => {
             status: "authenticated",
             token: token,
             refreshToken: refreshToken,
-
         }
     }
 }
@@ -100,7 +99,7 @@ module.exports.getNewAccessToken = async (refreshToken) => {
         return {
             status: "unauthorized",
             data: {
-                message: "unauthorized user"
+                message: "unauthorized user please login again"
             }
         }
     } else {

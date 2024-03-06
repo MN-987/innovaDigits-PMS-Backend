@@ -1,3 +1,4 @@
+const { NETWORK_AUTHENTICATION_REQUIRED } = require('http-status-codes');
 const authService = require('../service/auth.service.js');
 const crypto = require('crypto');
 
@@ -14,22 +15,24 @@ module.exports.postLogin = async (req, res) => {
             data: response.data
         });
     } else if (response.status === "authenticated") {
-        res.cookie("token", response.token, {
-            maxAge: 1000 * 60*60 ,
-            httpOnly: true,
-            sameSite: true,
-            secure: true
-        });
-        res.cookie("refreshToken", response.refreshToken, {
-            maxAge: 1000 * 60 * 60 * 24,
-            httpOnly: true,
-            sameSite: true,
-            secure: true
-        });
+        // res.cookie("token", response.token, {
+        //     maxAge: 1000 * 60*60 ,
+        //     httpOnly: true,
+        //     sameSite: 'none',
+        //     secure: true
+        // });
+        // res.cookie("refreshToken", response.refreshToken, {
+        //     maxAge: 1000 * 60 * 60 * 24,
+        //     httpOnly: true,
+        //     sameSite: 'none',
+        //     secure: true
+        // });
         return res.status(200).json({
             status: "success",
             data: {
-                message: "user authenticated successfully"
+                message: "user authenticated successfully",
+                accesToken: response.token,
+                refreshToken: response.refreshToken
             },
         });
     }
@@ -56,13 +59,16 @@ module.exports.postSetPassword = async (req, res, next) => {
 }
 
 module.exports.getRefreshToken=async (req,res,next)=>{
-    const refreshToken=req.cookies.refreshToken;
+
+    // This should be getten from the header
+    const refreshToken=req.body.refreshToken;
+
     if(!refreshToken){
         // Here I should rediregt to login page
         return res.status(401).json({
             status: "fail",
             data: {
-                error: "Unauthorized"
+                error: "Unauthorized refresh token not found"
             }
         });
     }
@@ -80,13 +86,20 @@ module.exports.getRefreshToken=async (req,res,next)=>{
         
         else if (response.status === "authorized") {
             const token = response.token;
-            res.cookie("token", token, {
-                maxAge: 1000 * 60 * 60,
-                httpOnly: true,
-                sameSite: true,
-                secure: true
+            // res.cookie("token", token, {
+            //     maxAge: 1000 * 60 * 60,
+            //     httpOnly: true,
+            //     sameSite: true,
+            //     secure: true
+            // });
+            // return res.redirect(req.headers.referer);
+            return res.status(200).json({
+                status: "success",
+                data: {
+                    message: "Token refreshed successfully",
+                    accessToken: token
+                }
             });
-            return res.redirect(req.headers.referer);
         }
     }
 }
