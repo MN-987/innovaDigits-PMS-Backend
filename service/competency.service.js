@@ -28,6 +28,13 @@ module.exports.updateCompetency = async (competencyId, competency) => {
     return Competency.findByIdAndUpdate(competencyId, competency);
 }
 
-module.exports.deletecompetency = async (competencyId) => {
+module.exports.deleteCompetency = async (competencyId) => {
     return Competency.findByIdAndDelete(competencyId);
 }
+
+module.exports.filterCompetencies=async(filterQuery)=> {
+        const competencies = await Competency.find(filterQuery);
+        return competencies;
+    
+}
+

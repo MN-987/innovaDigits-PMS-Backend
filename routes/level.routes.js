@@ -10,8 +10,8 @@ const isSuperAdmin = require('../middleware/auth/isSuperAdmin');
 
 levelRouter.route('/')
     .get(asyncHandler(levelController.getAllLevels))
-    .post(validation(levelValidator.validateAddLevel), asyncHandler(levelController.addNewLevel));
-
+    .post( asyncHandler(isSuperAdmin),validation(levelValidator.validateAddLevel),asyncHandler(levelController.addNewLevel));
+    
 levelRouter.route('/edit/:levelID').post(validation(levelValidator.validateUpdateLevel), asyncHandler(levelController.updateLevel))
 
 levelRouter.route('/:levelID').get(asyncHandler(levelController.getLevelById))

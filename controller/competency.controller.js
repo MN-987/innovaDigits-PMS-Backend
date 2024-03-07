@@ -27,8 +27,8 @@ module.exports.getCompetencyById = async (req, res, next) => {
 }
 
 module.exports.getAllCompetencies = async (req, res, next) => {
-    const competencyes = await competencyService.getAllCompetencies();
-    res.status(200).json({ status: "success", data: competencyes });
+    const competencies = await competencyService.getAllCompetencies();
+    res.status(200).json({ status: "success", data: competencies });
 }
 
 module.exports.deleteCompetency = async (req, res, next) => {
@@ -37,7 +37,7 @@ module.exports.deleteCompetency = async (req, res, next) => {
     if (!competency) {
         return next(new ErrorClass("This competency not found", 404));
     }
-    await competencyService.deletecompetency(competencyId)
+    await competencyService.deleteCompetency(competencyId)
     res.status(200).json({ status: "success", data: null });
 }
 
@@ -52,36 +52,27 @@ module.exports.updateCompetency = async (req, res, next) => {
 }
 
 module.exports.search = async (req, res) => {
-    try {
         const data = await Competency.find({
             "$or": [
                 { name: { $regex: req.query.comp, $options: 'i' } }
             ]
         });
         res.status(200).json({ status: "success", data });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Internal server error" });
-    }
+        
 }
 
-module.exports.filter = async (req, res) => {
-    try {
+module.exports.filter = async (req, res,next) => {
+   
         const filterQuery = {};
 
         if (req.query.name) {
-            filterQuery.name = req.query.name;
+            const regexPattern = new RegExp(req.query.name, 'i');
+            filterQuery.name = regexPattern;
         }
-
-        // if (req.query.category) {
-        //     filterQuery.category = req.query.category;
-        // }
-
-        // Execute the filter query
-        const compotencies = await Competency.find(filterQuery);  // Ex: Equal to ==> Competency.find({name: communication})
-        res.json(compotencies);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
+     console.log(filterQuery)
+     const competencies = await competencyService.filterCompetencies(filterQuery);
+     if(!competencies.length){
+        return next(new ErrorClass('no matched competencies',404))
+     }
+    res.status(200).json({ status: "success",data:{competencies} });
 }
