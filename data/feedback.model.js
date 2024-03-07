@@ -19,7 +19,9 @@ const feedbackSchema = new Schema({
         ref: 'User'
     }],
     feedbackType: {
-        type: String
+        type:String,
+        enum: ['normal', 'praise', 'requested'],
+        required:true
     }
 });
 

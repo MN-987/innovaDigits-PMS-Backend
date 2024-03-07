@@ -11,6 +11,7 @@ const express = require('express');
 const userRoutes = require("../routes/user.routes.js");
 const cors = require('cors');
 const Competency = require("../data/competency.model.js");
+const feedbackRouter=require('../routes/feedback.routes.js');
 const bootstrap = (app, express) => {
 
     //register middlewares 
@@ -44,7 +45,8 @@ const bootstrap = (app, express) => {
 
     app.use("/api/v1/user", userRoutes);
     app.use("/api/v1/competency", competencyRouter)
-    app.use("/api/v1/auth", authRouter);
+    app.use("/api/v1/auth", authRouter);    
+    app.use("/api/v1/feedback",feedbackRouter)
 
 
 

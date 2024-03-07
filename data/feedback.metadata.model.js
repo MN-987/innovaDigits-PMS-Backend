@@ -7,7 +7,7 @@ const FeedbackMetaDataSchema = new Schema({
         ref: 'Feedback'
     },
     name: String,
-    value: String
+    value: Schema.Types.Mixed
 });
 
 module.exports = mongoose.model('FeedbackMetadata', FeedbackMetaDataSchema);
