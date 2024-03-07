@@ -65,28 +65,25 @@ module.exports.search = async (req, res, next) => {
 module.exports.filter = async (req, res, next) => {
 
     const filterQuery = {};
+    let competencies;
 
     if (req.query.categoryId) {
-        // const regexPattern = new RegExp(req.query.categoryName, 'i');
         filterQuery.categoryId = req.query.categoryId;
-        const competencies = await competencyService.filterByCategoryId(filterQuery.categoryId);
-        if (!competencies.length) {
-            return next(new ErrorClass('no matched competencies', 404))
-        }
-        res.status(200).json({ status: "success", data: { competencies } });
-    }
-
-    if (req.query.teamId) {
+            competencies = await competencyService.filter({category:filterQuery.categoryId});
+        
+    }else if (req.query.teamId) {
         filterQuery.teamId = req.query.teamId
-        const competencies = await competencyService.filterByTeamId(filterQuery.teamId);
-        res.status(200).json({ status: "success", data: { competencies } });
+            competencies = await competencyService.filter({teamsAssigned:filterQuery.teamId});
+    }else{
+        filterQuery.levelId = req.query.levelId;
+            competencies = await competencyService.filter({'seniorityLevels.level':filterQuery.levelId});
     }
+    
+    if (!competencies.length) {
+        return next(new ErrorClass('no matched competencies', 404))
+    }else res.status(200).json({ status: "success", data: { competencies } });
 
-    if (req.query.levelId) {
-        filterQuery.levelId = req.query.levelId
-        const competencies = await competencyService.filterByLevelId(filterQuery.levelId);
-        res.status(200).json({ status: "success", data: { competencies } });
-    }}
+}
 
 module.exports.getCompetencyForTeam=async(req,res,next)=>{
     const teamId=req.params.teamId;
