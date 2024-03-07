@@ -7,19 +7,11 @@ module.exports.addCompetency = async (competency) => {
 }
 
 module.exports.getAllCompetencies = async () => {
-    return Competency.find().populate('category',' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0 });
-    // .populate( {
-    //     path: "seniorityLevels",
-    //     populate : {
-    //       path: "levelId",
-    //       model: "Level"
-    //     }
-    //   }) 
-       
+    return Competency.find().populate('category', ' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0 });
 }
 
 module.exports.getCompetencyById = async (competencyId) => {
-    return Competency.findById(competencyId).populate('category',' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0});
+    return Competency.findById(competencyId).populate('category', ' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0 });
 }
 
 module.exports.getCompetencyByName = async (name) => {
@@ -34,9 +26,19 @@ module.exports.deleteCompetency = async (competencyId) => {
     return Competency.findByIdAndDelete(competencyId);
 }
 
-module.exports.filterCompetencies=async(filterQuery)=> {
-        const competencies = await Competency.find(filterQuery);
-        return competencies;
+
+module.exports.searchCompetencies = async (searchQuery) => {
+    const competencies = await Competency.find({
+        "$or": [
+            { name: searchQuery }
+        ]
+    }).populate('category', ' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0 });
+    return competencies;
+}
+
+module.exports.filter = async (condition) => {
+    return await Competency.find(condition)
+    .populate('category', ' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0 });
     
 }
 
