@@ -32,9 +32,29 @@ module.exports.deleteCompetency = async (competencyId) => {
     return Competency.findByIdAndDelete(competencyId);
 }
 
-module.exports.filterCompetencies=async(filterQuery)=> {
-        const competencies = await Competency.find(filterQuery);
-        return competencies;
+
+module.exports.searchCompetencies=async(searchQuery)=>{
+const competencies =await Competency.find({
+    "$or": [
+        { name: searchQuery }
+    ]
+})
+ return competencies;
+}
+
+module.exports.filterCompetencies = async (filterQuery) => {
+
+    const competencies = await Competency.find({ 'teamsAssigned.teamName': filterQuery })
+    .populate('teamsAssigned') // Populate the teamsAssigned field
     
+    console.log(filterQuery)
+    return competencies;
+}
+
+module.exports.filterCategory = async (filterQuery) => {
+
+    const competencies = await Competency.find({  category :  filterQuery }).populate('category',' _id categoryName ')
+    // console.log(filterQuery)
+    return competencies;
 }
 

@@ -51,28 +51,26 @@ module.exports.updateCompetency = async (req, res, next) => {
     res.status(200).json({ status: "success", data: { updatedCompetency } });
 }
 
-module.exports.search = async (req, res) => {
-        const data = await Competency.find({
-            "$or": [
-                { name: { $regex: req.query.comp, $options: 'i' } }
-            ]
-        });
-        res.status(200).json({ status: "success", data });
-        
+module.exports.search = async (req, res, next) => {
+    const searchQuery = { $regex: req.query.comp, $options: 'i' };
+    const competencies = await competencyService.searchCompetencies(searchQuery);
+    if (!competencies.length) {
+        next(new ErrorClass('no matched competencies', 404))
+    }
+    res.status(200).json({ status: "success", data: { competencies } });
+
 }
+module.exports.filter = async (req, res, next) => {
 
-module.exports.filter = async (req, res,next) => {
-   
-        const filterQuery = {};
+    const filterQuery = {};
 
-        if (req.query.name) {
-            const regexPattern = new RegExp(req.query.name, 'i');
-            filterQuery.name = regexPattern;
-        }
-     console.log(filterQuery)
-     const competencies = await competencyService.filterCompetencies(filterQuery);
-     if(!competencies.length){
-        return next(new ErrorClass('no matched competencies',404))
-     }
-    res.status(200).json({ status: "success",data:{competencies} });
+    if (req.query.categoryName) {
+        filterQuery.categoryName = req.query.categoryName;
+    }
+    console.log(filterQuery)
+    const competencies = await competencyService.filterCategory(filterQuery);
+    if (!competencies.length) {
+        return next(new ErrorClass('no matched competencies', 404))
+    }
+    res.status(200).json({ status: "success", data: { competencies } });
 }
