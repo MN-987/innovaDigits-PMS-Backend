@@ -55,9 +55,9 @@ module.exports.updateCompetency = async (req, res, next) => {
 module.exports.search = async (req, res, next) => {
     const searchQuery = { $regex: req.query.comp, $options: 'i' };
     const competencies = await competencyService.searchCompetencies(searchQuery);
-    if (!competencies.length) {
-        next(new ErrorClass('no matched competencies', 404))
-    }
+    // if (!competencies.length) {
+    //     next(new ErrorClass('no matched competencies', 404))
+    // }
     res.status(200).json({ status: "success", data: { competencies } });
 
 }
