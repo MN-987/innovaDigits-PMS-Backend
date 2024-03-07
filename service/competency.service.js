@@ -1,3 +1,5 @@
+const mongoose=require('mongoose');
+
 const Competency = require('../data/competency.model')
 
 module.exports.addCompetency = async (competency) => {
@@ -71,3 +73,10 @@ module.exports.filterByLevelId = async (levelId) => {
 //     const competencies = await Competency.find({ query: value }).populate('category', ' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0 });
 //     return competencies
 // }
+module.exports.getCompetencyForTeam=async (id)=>{
+    const teamCompetencies=await Competency.find({
+        teamsAssigned:new  mongoose.Types.ObjectId(id)
+    }
+    ).populate('seniorityLevels.level','_id levelName').populate('category','_id categoryName').select({ __v: 0 , teamsAssigned:0, createdAt:0 , updatedAt:0})
+    return teamCompetencies;
+}
