@@ -5,7 +5,7 @@ module.exports.addCompetency = async (competency) => {
 }
 
 module.exports.getAllCompetencies = async () => {
-    return Competency.find().populate('category',' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0 });
+    return Competency.find().populate('category', ' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0 });
     // .populate( {
     //     path: "seniorityLevels",
     //     populate : {
@@ -13,11 +13,11 @@ module.exports.getAllCompetencies = async () => {
     //       model: "Level"
     //     }
     //   }) 
-       
+
 }
 
 module.exports.getCompetencyById = async (competencyId) => {
-    return Competency.findById(competencyId).populate('category',' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0});
+    return Competency.findById(competencyId).populate('category', ' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0 });
 }
 
 module.exports.getCompetencyByName = async (name) => {
@@ -33,28 +33,41 @@ module.exports.deleteCompetency = async (competencyId) => {
 }
 
 
-module.exports.searchCompetencies=async(searchQuery)=>{
-const competencies =await Competency.find({
-    "$or": [
-        { name: searchQuery }
-    ]
-})
- return competencies;
-}
-
-module.exports.filterCompetencies = async (filterQuery) => {
-
-    const competencies = await Competency.find({ 'teamsAssigned.teamName': filterQuery })
-    .populate('teamsAssigned') // Populate the teamsAssigned field
-    
-    console.log(filterQuery)
+module.exports.searchCompetencies = async (searchQuery) => {
+    const competencies = await Competency.find({
+        "$or": [
+            { name: searchQuery }
+        ]
+    }).populate('category', ' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0 });
     return competencies;
 }
 
-module.exports.filterCategory = async (filterQuery) => {
+// module.exports.filterCompetencies = async (filterQuery) => {
 
-    const competencies = await Competency.find({  category :  filterQuery }).populate('category',' _id categoryName ')
-    // console.log(filterQuery)
+//     const competencies = await Competency.find({ 'teamsAssigned.teamName': filterQuery })
+//         .populate('teamsAssigned') // Populate the teamsAssigned field
+
+//     console.log(filterQuery)
+//     return competencies;
+// }
+
+module.exports.filterByCategoryId = async (categoryId) => {
+
+    const competencies = await Competency.find({ category: categoryId }).populate('category', ' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0 });
     return competencies;
 }
 
+module.exports.filterByTeamId = async (teamId) => {
+    const Competencies = await Competency.find({ teamsAssigned: teamId }).populate('category', ' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0 });
+    return Competencies
+}
+
+module.exports.filterByLevelId = async (levelId) => {
+    const Competencies = await Competency.find({ 'seniorityLevels.level': levelId }).populate('category', ' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0 });
+    return Competencies
+}
+
+// module.exports.filter = async (query, value) => {
+//     const competencies = await Competency.find({ query: value }).populate('category', ' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0 });
+//     return competencies
+// }

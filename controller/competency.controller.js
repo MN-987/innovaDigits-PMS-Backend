@@ -27,8 +27,8 @@ module.exports.getCompetencyById = async (req, res, next) => {
 }
 
 module.exports.getAllCompetencies = async (req, res, next) => {
-    const competencies = await competencyService.getAllCompetencies();
-    res.status(200).json({ status: "success", data: competencies });
+    const competencyes = await competencyService.getAllCompetencies();
+    res.status(200).json({ status: "success", data: competencyes });
 }
 
 module.exports.deleteCompetency = async (req, res, next) => {
@@ -37,7 +37,7 @@ module.exports.deleteCompetency = async (req, res, next) => {
     if (!competency) {
         return next(new ErrorClass("This competency not found", 404));
     }
-    await competencyService.deleteCompetency(competencyId)
+    await competencyService.deletecompetency(competencyId)
     res.status(200).json({ status: "success", data: null });
 }
 
@@ -65,14 +65,34 @@ module.exports.filter = async (req, res, next) => {
 
     const filterQuery = {};
 
-    if (req.query.categoryName) {
-        const regexPattern = new RegExp(req.query.categoryName, 'i');
-        filterQuery.categoryName = regexPattern;
+    if (req.query.categoryId) {
+        // const regexPattern = new RegExp(req.query.categoryName, 'i');
+        filterQuery.categoryId = req.query.categoryId;
+        const competencies = await competencyService.filterByCategoryId(filterQuery.categoryId);
+        if (!competencies.length) {
+            return next(new ErrorClass('no matched competencies', 404))
+        }
+        res.status(200).json({ status: "success", data: { competencies } });
     }
-    console.log(filterQuery)
-    const competencies = await competencyService.filterCategory(filterQuery.categoryName);
-    if (!competencies.length) {
-        return next(new ErrorClass('no matched competencies', 404))
+
+    if (req.query.teamId) {
+        filterQuery.teamId = req.query.teamId
+        const competencies = await competencyService.filterByTeamId(filterQuery.teamId);
+        res.status(200).json({ status: "success", data: { competencies } });
     }
-    res.status(200).json({ status: "success", data: { competencies } });
+
+    if (req.query.levelId) {
+        filterQuery.levelId = req.query.levelId
+        const competencies = await competencyService.filterByLevelId(filterQuery.levelId);
+        res.status(200).json({ status: "success", data: { competencies } });
+    }
+
+    // if (req.query.levelId) {
+    //     filterQuery.levelId = req.query.levelId
+    //     const competencies = await competencyService.filter(req.query.levelId, filterQuery.levelId);
+    //     res.status(200).json({ status: "success", data: { competencies } });
+    // }
+
+    // console.log(filterQuery)
+
 }
