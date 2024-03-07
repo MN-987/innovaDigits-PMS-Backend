@@ -8,14 +8,6 @@ module.exports.addCompetency = async (competency) => {
 
 module.exports.getAllCompetencies = async () => {
     return Competency.find().populate('category', ' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0 });
-    // .populate( {
-    //     path: "seniorityLevels",
-    //     populate : {
-    //       path: "levelId",
-    //       model: "Level"
-    //     }
-    //   }) 
-
 }
 
 module.exports.getCompetencyById = async (competencyId) => {
@@ -44,35 +36,12 @@ module.exports.searchCompetencies = async (searchQuery) => {
     return competencies;
 }
 
-// module.exports.filterCompetencies = async (filterQuery) => {
-
-//     const competencies = await Competency.find({ 'teamsAssigned.teamName': filterQuery })
-//         .populate('teamsAssigned') // Populate the teamsAssigned field
-
-//     console.log(filterQuery)
-//     return competencies;
-// }
-
-module.exports.filterByCategoryId = async (categoryId) => {
-
-    const competencies = await Competency.find({ category: categoryId }).populate('category', ' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0 });
-    return competencies;
+module.exports.filter = async (condition) => {
+    return await Competency.find(condition)
+    .populate('category', ' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0 });
+    
 }
 
-module.exports.filterByTeamId = async (teamId) => {
-    const Competencies = await Competency.find({ teamsAssigned: teamId }).populate('category', ' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0 });
-    return Competencies
-}
-
-module.exports.filterByLevelId = async (levelId) => {
-    const Competencies = await Competency.find({ 'seniorityLevels.level': levelId }).populate('category', ' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0 });
-    return Competencies
-}
-
-// module.exports.filter = async (query, value) => {
-//     const competencies = await Competency.find({ query: value }).populate('category', ' _id categoryName ').populate('seniorityLevels.level').populate('teamsAssigned').select({ __v: 0 });
-//     return competencies
-// }
 module.exports.getCompetencyForTeam=async (id)=>{
     const teamCompetencies=await Competency.find({
         teamsAssigned:new  mongoose.Types.ObjectId(id)
