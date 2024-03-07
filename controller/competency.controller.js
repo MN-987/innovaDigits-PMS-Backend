@@ -60,15 +60,17 @@ module.exports.search = async (req, res, next) => {
     res.status(200).json({ status: "success", data: { competencies } });
 
 }
+
 module.exports.filter = async (req, res, next) => {
 
     const filterQuery = {};
 
     if (req.query.categoryName) {
-        filterQuery.categoryName = req.query.categoryName;
+        const regexPattern = new RegExp(req.query.categoryName, 'i');
+        filterQuery.categoryName = regexPattern;
     }
     console.log(filterQuery)
-    const competencies = await competencyService.filterCategory(filterQuery);
+    const competencies = await competencyService.filterCategory(filterQuery.categoryName);
     if (!competencies.length) {
         return next(new ErrorClass('no matched competencies', 404))
     }
