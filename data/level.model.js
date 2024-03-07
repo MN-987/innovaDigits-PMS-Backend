@@ -1,10 +1,10 @@
-const mongoose =require('mongoose')
+const mongoose = require('mongoose')
 
 const levelSchema = new mongoose.Schema({
-levelName:{
-    type:String,
-    required:true
- }
+    levelName: {
+        type: String,
+        required: true
+    }
 
 })
 

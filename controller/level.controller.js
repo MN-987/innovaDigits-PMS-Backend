@@ -26,7 +26,7 @@ module.exports.updateLevel = async (req, res, next) => {
     if (level.modifiedCount === 0) {
         return next(new ErrorClass('This level is not found.', 404));
     }
-    
+
     res.status(200).json({ status: "success", data: { level } });
 }
 
@@ -35,7 +35,7 @@ module.exports.addNewLevel = async (req, res, next) => {
 
     const existingLevel = await levelService.getLevelByName(req.body.levelName);
     if (existingLevel) {
-        return  next(new ErrorClass('Level name already exists.',400))
+        return next(new ErrorClass('Level name already exists.', 400))
     }
     const level = await levelService.addLevelServices(req.body);
     res.status(201).json({ status: "success", data: { levels: level } });
