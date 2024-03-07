@@ -15,8 +15,8 @@ router.route("/").
     .get(
         asyncHandler(competencyController.getAllCompetencies)
     );
-router.route("/search").get(competencyController.search)
-router.route("/filter").get(competencyController.filter)
+router.route("/search").get(asyncHandler(competencyController.search))
+router.route("/filter").get(asyncHandler(competencyController.filter))
 
 router.route("/:competencyId")
     .get(
