@@ -83,6 +83,10 @@ const userSchema = new Schema({
         type: Boolean,
         default: false
     },
+    feedback:{
+        type: Schema.Types.ObjectId,
+        ref:'Feedback'
+    }
 })
 
 /*
