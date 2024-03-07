@@ -1,6 +1,7 @@
 const Competency = require('../data/competency.model');
 const competencyService = require('../service/competency.service');
 const ErrorClass = require('../util/errorClass');
+const { asyncHandler } = require('../util/errorHandling');
 
 
 module.exports.addCompetency = async (req, res, next) => {
@@ -75,4 +76,15 @@ module.exports.filter = async (req, res,next) => {
         return next(new ErrorClass('no matched competencies',404))
      }
     res.status(200).json({ status: "success",data:{competencies} });
+}
+
+module.exports.getCompetencyForTeam=async(req,res,next)=>{
+    const teamId=req.params.teamId;
+    const teamCompetencies=await competencyService.getCompetencyForTeam(teamId  );
+
+    if(!teamCompetencies){
+        return next(new ErrorClass('no matched teams',404))
+    }
+    res.status(200).json({ status: "success",data:{teamCompetencies} });
+
 }
