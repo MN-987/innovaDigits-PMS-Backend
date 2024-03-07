@@ -28,8 +28,8 @@ module.exports.getCompetencyById = async (req, res, next) => {
 }
 
 module.exports.getAllCompetencies = async (req, res, next) => {
-    const competencies = await competencyService.getAllCompetencies();
-    res.status(200).json({ status: "success", data: competencies });
+    const competencyes = await competencyService.getAllCompetencies();
+    res.status(200).json({ status: "success", data: competencyes });
 }
 
 module.exports.deleteCompetency = async (req, res, next) => {
@@ -38,7 +38,7 @@ module.exports.deleteCompetency = async (req, res, next) => {
     if (!competency) {
         return next(new ErrorClass("This competency not found", 404));
     }
-    await competencyService.deleteCompetency(competencyId)
+    await competencyService.deletecompetency(competencyId)
     res.status(200).json({ status: "success", data: null });
 }
 
@@ -52,31 +52,41 @@ module.exports.updateCompetency = async (req, res, next) => {
     res.status(200).json({ status: "success", data: { updatedCompetency } });
 }
 
-module.exports.search = async (req, res) => {
-        const data = await Competency.find({
-            "$or": [
-                { name: { $regex: req.query.comp, $options: 'i' } }
-            ]
-        });
-        res.status(200).json({ status: "success", data });
-        
+module.exports.search = async (req, res, next) => {
+    const searchQuery = { $regex: req.query.comp, $options: 'i' };
+    const competencies = await competencyService.searchCompetencies(searchQuery);
+    if (!competencies.length) {
+        next(new ErrorClass('no matched competencies', 404))
+    }
+    res.status(200).json({ status: "success", data: { competencies } });
+
 }
 
-module.exports.filter = async (req, res,next) => {
-   
-        const filterQuery = {};
+module.exports.filter = async (req, res, next) => {
 
-        if (req.query.name) {
-            const regexPattern = new RegExp(req.query.name, 'i');
-            filterQuery.name = regexPattern;
+    const filterQuery = {};
+
+    if (req.query.categoryId) {
+        // const regexPattern = new RegExp(req.query.categoryName, 'i');
+        filterQuery.categoryId = req.query.categoryId;
+        const competencies = await competencyService.filterByCategoryId(filterQuery.categoryId);
+        if (!competencies.length) {
+            return next(new ErrorClass('no matched competencies', 404))
         }
-     console.log(filterQuery)
-     const competencies = await competencyService.filterCompetencies(filterQuery);
-     if(!competencies.length){
-        return next(new ErrorClass('no matched competencies',404))
-     }
-    res.status(200).json({ status: "success",data:{competencies} });
-}
+        res.status(200).json({ status: "success", data: { competencies } });
+    }
+
+    if (req.query.teamId) {
+        filterQuery.teamId = req.query.teamId
+        const competencies = await competencyService.filterByTeamId(filterQuery.teamId);
+        res.status(200).json({ status: "success", data: { competencies } });
+    }
+
+    if (req.query.levelId) {
+        filterQuery.levelId = req.query.levelId
+        const competencies = await competencyService.filterByLevelId(filterQuery.levelId);
+        res.status(200).json({ status: "success", data: { competencies } });
+    }}
 
 module.exports.getCompetencyForTeam=async(req,res,next)=>{
     const teamId=req.params.teamId;
