@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 router.route('/').get(
-    
+    asyncHandler(feedbackControler.getAllFeedbacks)
 ).post(
     asyncHandler(feedbackControler.postAddFeedback)
 )

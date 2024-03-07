@@ -1,8 +1,9 @@
 
 const feedBackService=require('../service/feedback.service');
 
-module.exports.getAllFeedbacks=(req,res)=>{
-
+module.exports.getAllFeedbacks= async (req,res)=>{
+   const feedbacks= await feedBackService.getAllFeedBack();
+   res.json({ status: "success", data: { feedbacks } });
 
 };
 

@@ -14,6 +14,19 @@ module.exports.addFeedBack = async (feedbackMainData, feedBackMetaData) => {
     return mainFeedBack;
 }
 
-module.exports.getFeedBack = async () => {
+module.exports.getAllFeedBack = async () => {
+    const feedbacks = await Feedback.find({});
+    const allFeedbacks = [];
 
+    for (const mainObj of feedbacks) {
+        const feedbackId = mainObj._id;
+        const metadata = await FeedbackMetadata.find({ feedbackId });
+        const feedbacksData = {
+            "feedbackMainData": mainObj,
+            "feedBackMetaData": metadata
+        };
+        allFeedbacks.push(feedbacksData);
+    }
+
+    return allFeedbacks;
 }
