@@ -34,5 +34,11 @@ router.route('/delete/:userId').get(
     asyncHandler(userController.deleteUser)
 );
 
+router.route('/team-leader/:empId').get(
+    asyncHandler(userController.getManagerID)
+)
 
+router.route('/team-members/:teamId').get(
+    asyncHandler(userController.getTeamMembers)
+)
 module.exports = router;
