@@ -33,5 +33,7 @@ router.route("/delete/:competencyId")
     );
 
 
-
+router.route("/teams-competencies/:teamId").get(
+    asyncHandler(competencyController.getCompetencyForTeam)
+)
 module.exports = router;
