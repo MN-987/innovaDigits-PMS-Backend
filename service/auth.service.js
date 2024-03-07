@@ -38,12 +38,14 @@ module.exports.authenticateNewUser = async (username, password) => {
         }
     } else {
         const token = jwt.sign({
+            "userId":user._id,
             "username": user.username,
             "role": user.role
         }, process.env.ACCESS_TOKEN_SECRET, {
             expiresIn: '1h'
         })
         const refreshToken = jwt.sign({
+            "userId":user._id,
             "username": user.username,
             "role": user.role
         }, process.env.REFRESH_TOKEN_SECRET, {
@@ -123,6 +125,7 @@ module.exports.getNewAccessToken = async (refreshToken) => {
         } else {
 
             const token = jwt.sign({
+                "userId":user._id,
                 "username": user.username,
                 "role": user.role
             }, process.env.ACCESS_TOKEN_SECRET, {
