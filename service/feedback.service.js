@@ -15,12 +15,16 @@ module.exports.addFeedBack = async (feedbackMainData, feedBackMetaData) => {
 }
 
 module.exports.getAllFeedBack = async () => {
-    const feedbacks = await Feedback.find({});
+    const feedbacks = await Feedback.find({}).populate('userIdFrom','_id firstName lastName username').populate('userIdTo','_id firstName lastName username').populate('visibility','_id firstName lastName username');
     const allFeedbacks = [];
 
     for (const mainObj of feedbacks) {
         const feedbackId = mainObj._id;
-        const metadata = await FeedbackMetadata.find({ feedbackId });
+        const metadata = await FeedbackMetadata.find({
+            feedbackId
+        });
+
+
         const feedbacksData = {
             "feedbackMainData": mainObj,
             "feedBackMetaData": metadata
@@ -29,4 +33,34 @@ module.exports.getAllFeedBack = async () => {
     }
 
     return allFeedbacks;
+}
+module.exports.deleteFeedBack = async () => {
+
+}
+
+module.exports.getFeedBackById = async (feedBackId) => {
+
+    const feedback = await Feedback.findOne({
+        _id: feedBackId
+    },{
+        __v:false
+    }).populate('userIdFrom','_id firstName lastName username').populate('userIdTo','_id firstName lastName username').populate('visibility','_id firstName lastName username');
+
+    if (!feedback) return null
+
+    const feedBackMetaData = await FeedbackMetadata.find({
+        feedbackId: feedback._id
+    },{
+        __v:false
+    });
+
+    const feedBackObj = {
+        "feedbackMainData": feedback,
+        "feedBackMetaData": feedBackMetaData
+    }
+    return feedBackObj;
+}
+
+module.exports.updateFeedBack = async () => {
+
 }

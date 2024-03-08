@@ -48,7 +48,7 @@ const feedbackObj={
         },
         {
             name:"feedbackStatus",
-            value:"pending" // it is one of three , pending , declined , accepted
+            value:"pending" // it is one of three , pending , declined , accepted , this is enm
         }
     
     ] // this is the id of the competency that will be for a user for wich the feed back is sent to  

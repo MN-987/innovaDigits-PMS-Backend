@@ -12,4 +12,8 @@ router.route('/').get(
     asyncHandler(feedbackControler.postAddFeedback)
 )
 
+router.route('/:id').get(
+    asyncHandler(feedbackControler.getFeedbackById)
+)
+
 module.exports=router;

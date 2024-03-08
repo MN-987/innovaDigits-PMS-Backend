@@ -131,7 +131,6 @@ module.exports.getManagerID = async (req,res,next)=>{
 }
 module.exports.getTeamMembers = async (req,res,next)=>{
     const teamId=req.params.teamId;
-    console.log('team id is ',teamId);
     const teamMembers=await userService.getTeamMembers(teamId);
     
     if(teamMembers.length==0){
