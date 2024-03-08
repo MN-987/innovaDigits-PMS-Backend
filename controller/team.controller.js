@@ -1,4 +1,5 @@
 const Teams = require("../data/team.model.js");
+
 const ErrorClass = require("../util/errorClass.js");
 const {
   getTeamByIdService,
@@ -70,6 +71,10 @@ const getTeamsNames = async (req, res, next) => {
     }
   })
 }
+
+
+
+
 
 module.exports = {
   getAllTeams,
