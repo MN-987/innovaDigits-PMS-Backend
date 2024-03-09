@@ -49,7 +49,7 @@ module.exports.authenticateNewUser = async (username, password) => {
             "username": user.username,
             "role": user.role
         }, process.env.REFRESH_TOKEN_SECRET, {
-            expiresIn: '1m'
+            expiresIn: '1d'
                 })
 
         // await User.findOneAndUpdate(
