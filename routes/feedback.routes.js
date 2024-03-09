@@ -15,5 +15,11 @@ router.route('/').get(
 router.route('/:id').get(
     asyncHandler(feedbackControler.getFeedbackById)
 )
+router.route('/accept/:id').post(
+    asyncHandler(feedbackControler.postUpdateFeedback)
+)
+router.route('/delete/:id').get(
+    feedbackControler.getDeleteFeedbcak
+)
 
 module.exports=router;

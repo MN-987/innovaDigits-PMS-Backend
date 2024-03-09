@@ -8,7 +8,7 @@ module.exports.getAllFeedbacks= async (req,res)=>{
 
 };
 
-module.exports.getFeedbackById=async (req,res)=>{
+module.exports.getFeedbackById=async (req,res,next)=>{
     const feedBackId=req.params.id;
     const feedBack =await feedBackService.getFeedBackById(feedBackId);
     if(!feedBack) return next(new ErrorClass(" This Feedback is not found ",404))
@@ -25,10 +25,22 @@ module.exports.postAddFeedback=async(req,res)=>{
     
 };
 
-module.exports.postUpdateFeedback=(req,res)=>{
-    
+module.exports.postUpdateFeedback= async (req,res,next)=>{
+    const feedbackId=req.params.id;
+
+    const feedBack =await feedBackService.getFeedBackById(feedbackId);
+    if(!feedBack){ return next(new ErrorClass(" This Feedback is not found ",404));}
+
+    const updatedFeedBack=await feedBackService.updateFeedBack(feedbackId);
+    res.json({ status: "success", data: { updatedFeedBack } });
 };
 
-module.exports.getDeleteFeedbcak=(req,res)=>{
+module.exports.getDeleteFeedbcak= async (req,res,next)=>{
+    const feedbackId=req.params.id;
 
+    const feedBack =await feedBackService.getFeedBackById(feedbackId);
+    if(!feedBack){ return next(new ErrorClass(" This Feedback is not found ",404));}
+
+    await feedBackService.deleteFeedBack(feedbackId);
+    res.json({ status: "success", message:"feedback deleted successfuly" });
 };

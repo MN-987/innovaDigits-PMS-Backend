@@ -34,8 +34,9 @@ module.exports.getAllFeedBack = async () => {
 
     return allFeedbacks;
 }
-module.exports.deleteFeedBack = async () => {
-
+module.exports.deleteFeedBack = async (feedBackId) => {
+    await Feedback.deleteOne({_id:feedBackId});
+    await FeedbackMetadata.deleteMany({feedbackId:feedBackId});
 }
 
 module.exports.getFeedBackById = async (feedBackId) => {
@@ -61,6 +62,13 @@ module.exports.getFeedBackById = async (feedBackId) => {
     return feedBackObj;
 }
 
-module.exports.updateFeedBack = async () => {
-
+module.exports.updateFeedBack = async (feedbackId) => {
+    const updatedFeedBack= await Feedback.findByIdAndUpdate({_id:feedbackId},{$set: {
+        'feedbackType': 'normal'
+    },})
+    const updatedFeedBackMetadata= await FeedbackMetadata.findOneAndUpdate(
+        {feedbackId,name:"feedbackStatus",value:"pending"},
+        {value: 'accepted'}
+        );
+    return this.getFeedBackById(feedbackId);
 }
