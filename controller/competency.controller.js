@@ -38,7 +38,7 @@ module.exports.deleteCompetency = async (req, res, next) => {
     if (!competency) {
         return next(new ErrorClass("This competency not found", 404));
     }
-    await competencyService.deletecompetency(competencyId)
+    await competencyService.deleteCompetency(competencyId)
     res.status(200).json({ status: "success", data: null });
 }
 
