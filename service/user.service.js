@@ -1,4 +1,5 @@
 const User = require('../data/user.model');
+const Team=require('../data/team.model');
 
 module.exports.getAllUsers = async () => {
     return User.find().select('-passwordHash -refreshToken -passwordActivationToken').populate('level').populate({
@@ -39,10 +40,21 @@ module.exports.getUserByEmail =async(userEmail)=>{
   return await User.findOne({email:userEmail})
 }
 module.exports.getUsersNames=async()=>{
-    return await User.find().select('_id username')
+    return await User.find().select('_id username team')
 }
 
 
 module.exports.getPasswordSetUrl=async()=>{
     
 }
+
+
+module.exports.getTeamMembers=async(teamId)=>{
+    const teamMembers= await User.find({team:teamId},{
+        _id:true,
+        firstName:true,
+        lastName:true,
+        username:true
+    })
+    return teamMembers;
+  }

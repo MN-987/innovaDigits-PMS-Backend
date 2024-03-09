@@ -8,20 +8,20 @@ const isAuthenticated = require('../middleware/auth/isAuthenticated.js');
 const isSuperAdmin = require('../middleware/auth/isSuperAdmin.js');
 
 router.route("/")
-.post(
-    validation(userValidator.addUser),
-    asyncHandler(userController.addUser)
-).get(
-  
-    asyncHandler(userController.getAllUsers)
-)
+    .post(
+        validation(userValidator.addUser),
+        asyncHandler(userController.addUser)
+    ).get(
+
+        asyncHandler(userController.getAllUsers)
+    )
 
 router.route('/usernames').get(
     asyncHandler(userController.getUsersNames)
 )
 
 
-router.route("/:userId").get( asyncHandler(userController.getUserById))
+router.route("/:userId").get(asyncHandler(userController.getUserById))
 
 
 router.route('/edit/:userId').post(
@@ -29,10 +29,16 @@ router.route('/edit/:userId').post(
     asyncHandler(userController.updateUser)
 )
 
-router.route('/delete/:userId').get(  
+router.route('/delete/:userId').get(
     validation(userValidator.deleteUser),
     asyncHandler(userController.deleteUser)
 );
 
+router.route('/team-leader/:empId').get(
+    asyncHandler(userController.getManagerID)
+)
 
+router.route('/team-members/:teamId').get(
+    asyncHandler(userController.getTeamMembers)
+)
 module.exports = router;

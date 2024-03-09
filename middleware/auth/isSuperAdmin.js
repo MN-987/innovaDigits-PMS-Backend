@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
         return res.status(403).json({
             status: "fail",
             data: {
-                message: "You are not authorized to access this resource"
+                message: "You are not authorized to access this resource."
             }
         });
     }

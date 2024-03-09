@@ -112,3 +112,33 @@ module.exports.getUsersNames = async (req, res) => {
         }
     });
 }
+
+module.exports.getManagerID = async (req,res,next)=>{
+
+    const empId=req.params.empId;
+    const user= await userService.getUserById(empId);
+    if(!user){
+        return next(new ErrorClass('This user is not found.', 404));
+    }
+    else {
+        res.status(200).json({
+            status: "success",
+            data: {
+                teamLeader:user.team.teamLeader
+            }
+        });
+    }
+}
+module.exports.getTeamMembers = async (req,res,next)=>{
+    const teamId=req.params.teamId;
+    const teamMembers=await userService.getTeamMembers(teamId);
+    
+    if(teamMembers.length==0){
+        return next(new ErrorClass('There is no members in this team', 404));
+    }
+    else{
+        return res.send({
+            teamMembers:teamMembers
+        })
+    }
+  }

@@ -9,6 +9,10 @@ require('dotenv').config();
 module.exports.authenticateNewUser = async (username, password) => {
     const user = await User.findOne({
         username: username
+    },{
+        passwordActivationToken:false,
+        __v:false,
+        refreshToken:false
     });
     if (!user) {
         return {
@@ -24,7 +28,6 @@ module.exports.authenticateNewUser = async (username, password) => {
     changed to user.passwordHash in the bcrypt compare 
     */
 
-
     const result = await bcrypt.compare(password, user.passwordHash);
     if (!result) {
         return {
@@ -35,12 +38,14 @@ module.exports.authenticateNewUser = async (username, password) => {
         }
     } else {
         const token = jwt.sign({
+            "userId":user._id,
             "username": user.username,
             "role": user.role
         }, process.env.ACCESS_TOKEN_SECRET, {
             expiresIn: '1h'
         })
         const refreshToken = jwt.sign({
+            "userId":user._id,
             "username": user.username,
             "role": user.role
         }, process.env.REFRESH_TOKEN_SECRET, {
@@ -52,16 +57,18 @@ module.exports.authenticateNewUser = async (username, password) => {
         //     { $push: { refreshToken: refreshToken } },
         //     { new: true, useFindAndModify: false }
         // );
-
+        
         await User.findOneAndUpdate({
             username: username
         }, {
             refreshToken: refreshToken
         })
+        user.passwordHash=null;
         return {
             status: "authenticated",
             token: token,
             refreshToken: refreshToken,
+            userData:user
         }
     }
 }
@@ -118,6 +125,7 @@ module.exports.getNewAccessToken = async (refreshToken) => {
         } else {
 
             const token = jwt.sign({
+                "userId":user._id,
                 "username": user.username,
                 "role": user.role
             }, process.env.ACCESS_TOKEN_SECRET, {
