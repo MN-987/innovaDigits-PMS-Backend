@@ -40,7 +40,7 @@ module.exports.getUserByEmail =async(userEmail)=>{
   return await User.findOne({email:userEmail})
 }
 module.exports.getUsersNames=async()=>{
-    return await User.find().select('_id username')
+    return await User.find().select('_id username team')
 }
 
 
