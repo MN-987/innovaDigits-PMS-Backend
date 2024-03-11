@@ -4,7 +4,6 @@ const ErrorClass = require('../util/errorClass.js');
 const Feedback = require('../data/feedback.model.js')
 
 module.exports.getAllFeedbacks = async (req, res) => {
-    try {
         // Parse pagination parameters from the request query
         const page = parseInt(req.query.page) || 1;
         const pageSize = parseInt(req.query.pageSize) || 6;
@@ -30,11 +29,7 @@ module.exports.getAllFeedbacks = async (req, res) => {
                 feedbacks: feedbacks,
             }
         });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal server error' });
     }
-};
 
 module.exports.getFeedbackById = async (req, res, next) => {
     const feedBackId = req.params.id;
