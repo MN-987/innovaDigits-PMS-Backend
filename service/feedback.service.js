@@ -78,10 +78,28 @@ module.exports.updateFeedBack = async (feedbackId) => {
 }
 
 module.exports.paginatedFeedbacks = async (skip, pageSize) => {
-    return await Feedback.find().populate('userIdFrom', '_id firstName lastName username').populate('userIdTo', '_id firstName lastName username').populate('visibility', '_id firstName lastName username')
+    const feedbacks = await Feedback.find().populate('userIdFrom', '_id firstName lastName username').populate('userIdTo', '_id firstName lastName username').populate('visibility', '_id firstName lastName username')
         .skip(skip)
         .limit(pageSize)
         .exec();
+
+    const allFeedbacks = [];
+
+    for (const mainObj of feedbacks) {
+        const feedbackId = mainObj._id;
+        const metadata = await FeedbackMetadata.find({
+            feedbackId
+        });
+
+
+        const feedbacksData = {
+            "feedbackMainData": mainObj,
+            "feedBackMetaData": metadata
+        };
+        allFeedbacks.push(feedbacksData);
+    }
+
+    return allFeedbacks;
 }
 
 module.exports.totalNumberOfFeedbacks = async () => {
