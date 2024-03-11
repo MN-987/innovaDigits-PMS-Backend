@@ -14,45 +14,47 @@ module.exports.addFeedBack = async (feedbackMainData, feedBackMetaData) => {
     return mainFeedBack;
 }
 
-module.exports.getAllFeedBack = async () => {
-    const feedbacks = await Feedback.find({}).populate('userIdFrom','_id firstName lastName username').populate('userIdTo','_id firstName lastName username').populate('visibility','_id firstName lastName username');
-    const allFeedbacks = [];
+// module.exports.getAllFeedBack = async () => {
+//     const feedbacks = await Feedback.find({}).populate('userIdFrom', '_id firstName lastName username').populate('userIdTo', '_id firstName lastName username').populate('visibility', '_id firstName lastName username');
+//     const allFeedbacks = [];
 
-    for (const mainObj of feedbacks) {
-        const feedbackId = mainObj._id;
-        const metadata = await FeedbackMetadata.find({
-            feedbackId
-        });
+//     for (const mainObj of feedbacks) {
+//         const feedbackId = mainObj._id;
+//         const metadata = await FeedbackMetadata.find({
+//             feedbackId
+//         });
 
 
-        const feedbacksData = {
-            "feedbackMainData": mainObj,
-            "feedBackMetaData": metadata
-        };
-        allFeedbacks.push(feedbacksData);
-    }
+//         const feedbacksData = {
+//             "feedbackMainData": mainObj,
+//             "feedBackMetaData": metadata
+//         };
+//         allFeedbacks.push(feedbacksData);
+//     }
 
-    return allFeedbacks;
-}
+//     return allFeedbacks;
+// }
+
+
 module.exports.deleteFeedBack = async (feedBackId) => {
-    await Feedback.deleteOne({_id:feedBackId});
-    await FeedbackMetadata.deleteMany({feedbackId:feedBackId});
+    await Feedback.deleteOne({ _id: feedBackId });
+    await FeedbackMetadata.deleteMany({ feedbackId: feedBackId });
 }
 
 module.exports.getFeedBackById = async (feedBackId) => {
 
     const feedback = await Feedback.findOne({
         _id: feedBackId
-    },{
-        __v:false
-    }).populate('userIdFrom','_id firstName lastName username').populate('userIdTo','_id firstName lastName username').populate('visibility','_id firstName lastName username');
+    }, {
+        __v: false
+    }).populate('userIdFrom', '_id firstName lastName username').populate('userIdTo', '_id firstName lastName username').populate('visibility', '_id firstName lastName username');
 
     if (!feedback) return null
 
     const feedBackMetaData = await FeedbackMetadata.find({
         feedbackId: feedback._id
-    },{
-        __v:false
+    }, {
+        __v: false
     });
 
     const feedBackObj = {
@@ -63,12 +65,25 @@ module.exports.getFeedBackById = async (feedBackId) => {
 }
 
 module.exports.updateFeedBack = async (feedbackId) => {
-    const updatedFeedBack= await Feedback.findByIdAndUpdate({_id:feedbackId},{$set: {
-        'feedbackType': 'normal'
-    },})
-    const updatedFeedBackMetadata= await FeedbackMetadata.findOneAndUpdate(
-        {feedbackId,name:"feedbackStatus",value:"pending"},
-        {value: 'accepted'}
-        );
+    const updatedFeedBack = await Feedback.findByIdAndUpdate({ _id: feedbackId }, {
+        $set: {
+            'feedbackType': 'normal'
+        },
+    })
+    const updatedFeedBackMetadata = await FeedbackMetadata.findOneAndUpdate(
+        { feedbackId, name: "feedbackStatus", value: "pending" },
+        { value: 'accepted' }
+    );
     return this.getFeedBackById(feedbackId);
+}
+
+module.exports.paginatedFeedbacks = async (skip, pageSize) => {
+    return await Feedback.find().populate('userIdFrom', '_id firstName lastName username').populate('userIdTo', '_id firstName lastName username').populate('visibility', '_id firstName lastName username')
+        .skip(skip)
+        .limit(pageSize)
+        .exec();
+}
+
+module.exports.totalNumberOfFeedbacks = async () => {
+    return await Feedback.countDocuments();
 }
