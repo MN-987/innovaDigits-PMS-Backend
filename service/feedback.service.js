@@ -77,8 +77,8 @@ module.exports.updateFeedBack = async (feedbackId) => {
     return this.getFeedBackById(feedbackId);
 }
 
-module.exports.paginatedFeedbacks = async (skip, pageSize) => {
-    const feedbacks = await Feedback.find().populate('userIdFrom', '_id firstName lastName username').populate('userIdTo', '_id firstName lastName username').populate('visibility', '_id firstName lastName username')
+module.exports.paginatedFeedbacks = async (skip, pageSize, type, userIdFrom,userIdTo) => {
+    const feedbacks = await Feedback.find({"$or":[{userIdFrom: userIdFrom },{userIdTo:userIdTo},{feedbackType: type}]}).populate('userIdFrom', '_id firstName lastName username').populate('userIdTo', '_id firstName lastName username').populate('visibility', '_id firstName lastName username')
         .skip(skip)
         .limit(pageSize)
         .exec();
@@ -98,7 +98,7 @@ module.exports.paginatedFeedbacks = async (skip, pageSize) => {
         };
         allFeedbacks.push(feedbacksData);
     }
-
+    
     return allFeedbacks;
 }
 

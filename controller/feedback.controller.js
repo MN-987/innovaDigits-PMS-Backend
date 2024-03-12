@@ -7,12 +7,15 @@ module.exports.getAllFeedbacks = async (req, res) => {
         // Parse pagination parameters from the request query
         const page = parseInt(req.query.page) || 1;
         const pageSize = parseInt(req.query.pageSize) || 6;
-
+        const type =req.query.type
+        const userIdFrom =req.query.userIdFrom
+        const userIdTo =req.query.userIdTo
         // Calculate skip count based on pagination parameters
         const skip = (page - 1) * pageSize;
-
+        
         // Fetch paginated feedbacks from the database
-        const feedbacks = await feedBackService.paginatedFeedbacks(skip, pageSize)
+        
+        const feedbacks = await feedBackService.paginatedFeedbacks(skip, pageSize,type,userIdFrom,userIdTo)
 
         // Count total number of feedbacks in the database
         const totalFeedbacks = await feedBackService.totalNumberOfFeedbacks()
