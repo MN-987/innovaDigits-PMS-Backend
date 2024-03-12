@@ -102,6 +102,6 @@ module.exports.paginatedFeedbacks = async (skip, pageSize, type, userIdFrom,user
     return allFeedbacks;
 }
 
-module.exports.totalNumberOfFeedbacks = async () => {
-    return await Feedback.countDocuments();
+module.exports.totalNumberOfFeedbacks = async (skip, pageSize, type, userIdFrom,userIdTo) => {
+    return await await Feedback.find({"$or":[{userIdFrom: userIdFrom },{userIdTo:userIdTo},{feedbackType: type}]}).countDocuments();
 }
