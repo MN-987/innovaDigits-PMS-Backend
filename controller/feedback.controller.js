@@ -7,18 +7,38 @@ module.exports.getAllFeedbacks = async (req, res) => {
         // Parse pagination parameters from the request query
         const page = parseInt(req.query.page) || 1;
         const pageSize = parseInt(req.query.pageSize) || 6;
-        const type =req.query.type
-        const userIdFrom =req.query.userIdFrom
-        const userIdTo =req.query.userIdTo
+        const type =req.query.type;
+        const userIdFrom =req.query.userIdFrom;
+        const userIdTo =req.query.userIdTo;
+        const currentUserId=req.query.currentUserId || null;
+
+
+    
+        let query={};
+
+        if(type=='normal' || type=='praise'){   
+            query={$or:[{feedbackType:'normal'} , {feedbackType:'praise'}] , visibility:{$elemMatch:{$eq:(currentUserId)}}};
+        }
+
+        // If we want to bring the requested feedback for myself  
+        else if (type=='requested' && userIdFrom){
+            query={feedbackType:'requested',userIdFrom:userIdFrom}
+        }
+        
+        // If we want to bring the pending feedback
+        else{
+            query={feedbackType:'requested',userIdTo:userIdTo}
+        }
+
         // Calculate skip count based on pagination parameters
         const skip = (page - 1) * pageSize;
         
         // Fetch paginated feedbacks from the database
         
-        const feedbacks = await feedBackService.paginatedFeedbacks(skip, pageSize,type,userIdFrom,userIdTo)
+        const feedbacks = await feedBackService.paginatedFeedbacks(skip, pageSize,query)
 
         // Count total number of feedbacks in the database
-        const totalFeedbacks = await feedBackService.totalNumberOfFeedbacks()
+        const totalFeedbacks = await feedBackService.totalNumberOfFeedbacks(query)
 
         // Calculate total number of pages
         const totalPages = Math.ceil(totalFeedbacks / pageSize);
