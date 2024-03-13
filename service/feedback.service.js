@@ -64,15 +64,19 @@ module.exports.getFeedBackById = async (feedBackId) => {
     return feedBackObj;
 }
 
-module.exports.updateFeedBack = async (feedbackId) => {
+module.exports.updateFeedBack = async (feedbackId,updatedData) => {
+    const {feedbackMainData,feedBackMetaData}=updatedData;
+    console.log(feedbackMainData)
+    console.log(feedBackMetaData)
     const updatedFeedBack = await Feedback.findByIdAndUpdate({ _id: feedbackId }, {
         $set: {
+            ...feedbackMainData,
             'feedbackType': 'normal'
         },
     })
     const updatedFeedBackMetadata = await FeedbackMetadata.findOneAndUpdate(
         { feedbackId, name: "feedbackStatus", value: "pending" },
-        { value: 'accepted' }
+        {...feedBackMetaData, value: 'accepted' }
     );
     return this.getFeedBackById(feedbackId);
 }

@@ -53,11 +53,11 @@ module.exports.postAddFeedback = async (req, res) => {
 
 module.exports.postUpdateFeedback = async (req, res, next) => {
     const feedbackId = req.params.id;
-
+    const updatedData =req.body
     const feedBack = await feedBackService.getFeedBackById(feedbackId);
     if (!feedBack) { return next(new ErrorClass(" This Feedback is not found ", 404)); }
 
-    const updatedFeedBack = await feedBackService.updateFeedBack(feedbackId);
+    const updatedFeedBack = await feedBackService.updateFeedBack(feedbackId,updatedData);
     res.json({ status: "success", data: { updatedFeedBack } });
 };
 
