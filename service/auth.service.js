@@ -42,14 +42,14 @@ module.exports.authenticateNewUser = async (username, password) => {
             "username": user.username,
             "role": user.role
         }, process.env.ACCESS_TOKEN_SECRET, {
-            expiresIn: '1h'
+            expiresIn: '1m'
         })
         const refreshToken = jwt.sign({
             "userId":user._id,
             "username": user.username,
             "role": user.role
         }, process.env.REFRESH_TOKEN_SECRET, {
-            expiresIn: '1d'
+            expiresIn: '1h'
                 })
 
         // await User.findOneAndUpdate(
