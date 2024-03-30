@@ -16,8 +16,7 @@ const teamsSchema = new Schema({
     unique: true,
   },
   teamLeader: {
-    type: ObjectId,
-    required: true,
+    type: Schema.Types.Mixed,
     ref: 'User'
   },
   parentTeam: {

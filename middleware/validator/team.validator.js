@@ -11,7 +11,7 @@ const validateAddTeam = Joi
       .pattern(/^[A-Za-z\s\d]+$/)
       .trim()
       .required(),
-    teamLeader: Joi.string().alphanum().trim().required(),
+    teamLeader: Joi.string().alphanum().trim().optional().allow(null, ''),
     parentTeam: Joi.string().alphanum().trim().optional().allow(null, '')
   });
   const validateUpdateTeam = Joi
