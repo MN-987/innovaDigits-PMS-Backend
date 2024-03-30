@@ -17,7 +17,6 @@ const teamsSchema = new Schema({
   },
   teamLeader: {
     type: ObjectId,
-    required: true,
     ref: 'User'
   },
   parentTeam: {
